@@ -1,1 +1,1 @@
-start of a read me. edited
+Start of a README file. Edited.
