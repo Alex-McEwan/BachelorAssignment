@@ -1,4 +1,3 @@
-
 from sklearn.datasets import load_iris
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
@@ -6,30 +5,20 @@ import umap
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-
-
-
 iris = load_iris(as_frame=True)
 df = iris.frame
-print(df.head())
-
 df = df.dropna()
 
 X = df.drop(columns=["target"])
-df["target"]
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
+y = df["target"].to_numpy()
 
-y = df["target"].values
-print(X_scaled.shape)
-
-
-reducer = umap.UMAP()
+print("started UMAP")
+reducer = umap.UMAP(random_state=42)
 X_umap = reducer.fit_transform(X_scaled)
-
-print(X_umap.shape)
-
+print("finished UMAP")
 
 species_names = iris.target_names
 
