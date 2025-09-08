@@ -10,8 +10,6 @@ import seaborn as sns
 
 iris = load_iris(as_frame=True)
 df = iris.frame
-print(df.head())
-
 df = df.dropna()
 
 X = df.drop(columns=["target"])
@@ -19,15 +17,11 @@ scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
 y = df["target"].to_numpy()
-print(X_scaled.shape)
 
 print("started UMAP")
 reducer = umap.UMAP(random_state=42)
 X_umap = reducer.fit_transform(X_scaled)
 print("finished UMAP")
-
-print(X_umap.shape)
-
 
 species_names = iris.target_names
 
