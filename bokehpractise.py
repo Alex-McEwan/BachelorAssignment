@@ -13,7 +13,7 @@ source = ColumnDataSource(df)
 
 p = figure(title="y = x line", x_axis_label="x", y_axis_label="y")
 
-p.line("x", "y", source=source, line_width=2)
+p.circle("x", "y", source=source, size=8, color="blue", alpha=0.5)
 
 output_file(output_folder + "bokehplot.html")
 
