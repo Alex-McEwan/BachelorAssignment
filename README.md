@@ -1,1 +1,1 @@
-A bachelors assignment attempting to apply UMAP to a materials dataset to vizualize that dataset. First practise umap implementation can be found at https://alex-mcewan.github.io/BachelorAssignment/iris_umap_bokeh.html
+A bachelor’s assignment attempting to apply UMAP to a materials dataset to visualize that dataset. The first practice UMAP implementation can be found at https://alex-mcewan.github.io/BachelorAssignment/iris_umap_bokeh.html
