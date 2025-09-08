@@ -1,1 +1,1 @@
-Start of a README file. Edited.
+A bachelors assignment attempting to apply UMAP to a materials dataset to vizualize that dataset. First practise umap implementation can be found at https://alex-mcewan.github.io/BachelorAssignment/iris_umap_bokeh.html
