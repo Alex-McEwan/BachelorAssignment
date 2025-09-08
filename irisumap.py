@@ -24,9 +24,10 @@ X_scaled = scaler.fit_transform(X)
 y = df["target"].values
 print(X_scaled.shape)
 
-
-reducer = umap.UMAP()
+print("started UMAP")
+reducer = umap.UMAP(random_state=42)
 X_umap = reducer.fit_transform(X_scaled)
+print("finished UMAP")
 
 print(X_umap.shape)
 
