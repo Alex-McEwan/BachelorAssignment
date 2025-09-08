@@ -22,8 +22,6 @@ reducer = umap.UMAP()
 X_umap = reducer.fit_transform(X_scaled)
 print("finished UMAP")
 
-digits_names = digits.target_names
-
 saving_dir = "bokehfiles"
 os.makedirs(saving_dir, exist_ok=True)
 
