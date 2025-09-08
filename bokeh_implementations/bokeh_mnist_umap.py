@@ -2,39 +2,67 @@ from sklearn.datasets import load_digits
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 import umap 
-import matplotlib.pyplot as plt
-import seaborn as sns
+
+from bokeh.plotting import figure, output_file, save
+from bokeh.models import ColumnDataSource, HoverTool, CategoricalColorMapper
+from bokeh.palettes import Category10
+import os
 
 digits = load_digits(as_frame=True)
 df = digits.frame
-print(df.head())
-
 
 X = df.drop(columns=["target"]) 
-y = df["target"].values
+y = df["target"].to_numpy()
 
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
-print(X_scaled.shape)
 
-
+print("started UMAP")
 reducer = umap.UMAP()
 X_umap = reducer.fit_transform(X_scaled)
-print(X_umap.shape)
+print("finished UMAP")
 
-palette = sns.color_palette("tab10", 10)  
+digits_names = digits.target_names
 
-for digit in range(10):
-    plt.scatter(
-        X_umap[y == digit, 0],
-        X_umap[y == digit, 1],
-        label=str(digit),
-        c=[palette[digit]],
-        s=5
-    )
+saving_dir = "bokehfiles"
+os.makedirs(saving_dir, exist_ok=True)
 
-plt.xlabel("UMAP-1")
-plt.ylabel("UMAP-2")
-plt.title("UMAP projection of the Digits dataset")
-plt.legend(title="Digit", bbox_to_anchor=(1.05, 1), loc='upper left')
-plt.savefig("plots/digits_umap.png", dpi=300, bbox_inches="tight")
+DIGIT_STRING = "digit"
+X_AXIS_STRING = "x"
+Y_AXIS_STRING = "y"
+
+digits_names = [str(d) for d in digits.target_names]
+digit_strings = y.astype(str) 
+plot_df = pd.DataFrame({
+    X_AXIS_STRING: X_umap[:, 0],
+    Y_AXIS_STRING: X_umap[:, 1],
+    DIGIT_STRING: digit_strings,
+})
+
+source = ColumnDataSource(plot_df)
+
+color_mapping = CategoricalColorMapper(factors=list(digits_names), palette=Category10[len(digits_names)])
+
+plot = figure(
+    title="UMAP projection digits dataset",
+    width=800, height=800,
+    tools="pan,wheel_zoom,box_zoom,reset,hover,save",
+    active_scroll="wheel_zoom"
+)
+
+plot.scatter("x", "y", source=source,
+            color={"field": DIGIT_STRING, "transform": color_mapping},
+            legend_field=DIGIT_STRING)
+
+plot.select_one(HoverTool).tooltips = [
+    ("Digit", f"@{DIGIT_STRING}"),
+    ("Horizontal axis", f"@{X_AXIS_STRING}{{0.00}}"),
+    ("Vertical axis", f"@{Y_AXIS_STRING}{{0.00}}"),
+]
+
+plot.legend.title = "Digit"
+plot.legend.location = "top_left"
+
+output_file(os.path.join(saving_dir, "digits_umap.html"))
+save(plot)
+
