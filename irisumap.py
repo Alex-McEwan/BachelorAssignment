@@ -5,9 +5,6 @@ import umap
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-
-
-
 iris = load_iris(as_frame=True)
 df = iris.frame
 df = df.dropna()
