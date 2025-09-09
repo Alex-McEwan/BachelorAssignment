@@ -6,7 +6,6 @@ from bokeh.plotting import figure, output_file, save
 from bokeh.models import ColumnDataSource, HoverTool, LinearColorMapper, ColorBar, BasicTicker
 from bokeh.palettes import Viridis256
 
-from bokeh.palettes import Category10
 import os
 
 df = pd.read_csv("datasets/bandgap_data_v3.csv")
