@@ -15,13 +15,13 @@ df = df.dropna()
 
 print(df.head())
 
-X = df.drop(columns=["Band gap values Clean", "Band gap units",  "chemicalFormula Clean", "index"])
+X = df.drop(columns=["Band gap values Clean", "Band gap units",  "chemicalFormula Clean", "index", "Reliability"])
 
 X_scaled = StandardScaler().fit_transform(X)
 
 y = df["Band gap values Clean"].to_numpy()
 
-reducer = umap.UMAP(random_state=40)
+reducer = umap.UMAP(random_state=42)
 print("started UMAP")
 X_umap = reducer.fit_transform(X_scaled)
 print("finished UMAP")
