@@ -15,7 +15,7 @@ df = df.dropna()
 
 print(df.head())
 
-X = df.drop(columns=["Band gap values Clean", "Band gap units",  "chemicalFormula Clean", "index", "Reliability"])
+X = df.drop(columns=["Band gap values Clean", "Band gap units",  "chemicalFormula Clean", "index"])
 
 X_scaled = StandardScaler().fit_transform(X)
 
