@@ -32,11 +32,14 @@ os.makedirs(saving_dir, exist_ok=True)
 X_AXIS_STRING = "x"
 Y_AXIS_STRING = "y"
 BANDGAP_STRING = "bandgap"
+FORMULA_STRING = "formula"
 
 plot_df = pd.DataFrame({
     X_AXIS_STRING: X_umap[:, 0],
     Y_AXIS_STRING: X_umap[:, 1],
     BANDGAP_STRING: y,
+    FORMULA_STRING: df["chemicalFormula Clean"].to_numpy()
+
 })
 
 source = ColumnDataSource(plot_df)
@@ -69,7 +72,12 @@ plot.select_one(HoverTool).tooltips = [
     ("Bandgap (eV)", f"@{BANDGAP_STRING}{{0.000}}"),
     ("Horizontal axis", f"@{X_AXIS_STRING}{{0.00}}"),
     ("Vertical axis", f"@{Y_AXIS_STRING}{{0.00}}"),
+    ("Chemical Formula", f"@{FORMULA_STRING}")
 ]
 
 output_file(os.path.join(saving_dir, "bandgap_umap.html"))
 save(plot)
+
+
+
+
