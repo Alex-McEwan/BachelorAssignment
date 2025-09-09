@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  umap:
+    build: .
+    container_name: umap_dev
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: tail -f /dev/null
