@@ -4,3 +4,4 @@ umap-learn
 bokeh
 matplotlib
 seaborn
+tensorflow
