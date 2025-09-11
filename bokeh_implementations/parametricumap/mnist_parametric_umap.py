@@ -12,8 +12,6 @@ savingdir = r"bokeh_implementations/parametricumap/mnist_model"
 x_train = x_train.astype("float32") / 255.0
 x_train = x_train.reshape((x_train.shape[0], -1))
 
-
-
 encoder = Sequential([
     layers.InputLayer(input_shape=(784,)),
     layers.Dense(128, activation="relu"),
