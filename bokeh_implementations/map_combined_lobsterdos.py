@@ -6,7 +6,7 @@ from bokeh.models import ColumnDataSource, HoverTool, LinearColorMapper, ColorBa
 from bokeh.palettes import Viridis256
 import os
 
-df = pd.read_csv(r"datasets\data_luc\CombinedHDPinfo_lobsterdos.csv")
+df = pd.read_csv(os.path.join("datasets", "data_luc", "CombinedHDPinfo_lobsterdos.csv"))
 
 numeric_cols = [
     "VBM", "CBM", "bandgap",
