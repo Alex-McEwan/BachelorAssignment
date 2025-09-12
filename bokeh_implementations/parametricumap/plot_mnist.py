@@ -11,17 +11,18 @@ from bokeh.palettes import Category10
 model_path = r"bokeh_implementations/parametricumap/mnist_model"
 embedder = load_ParametricUMAP(model_path)
 
-(_, _), (x_test, y_test) = mnist.load_data()
-x_test = x_test.astype("float32") / 255.0
-x_test = x_test.reshape((x_test.shape[0], -1))
+(x_train, y_train), (_, _) = mnist.load_data()
+x_train = x_train.astype("float32") / 255.0
+x_train = x_train.reshape((x_train.shape[0], -1))
 
-X_umap = embedder.transform(x_test)
+
+X_umap = embedder.transform(x_train)
 
 DIGIT_STRING = "digit"
 X_AXIS_STRING = "x"
 Y_AXIS_STRING = "y"
 
-digit_strings = y_test.astype(str)
+digit_strings = y_train.astype(str)
 plot_df = pd.DataFrame({
     X_AXIS_STRING: X_umap[:, 0],
     Y_AXIS_STRING: X_umap[:, 1],
@@ -35,7 +36,7 @@ color_mapping = CategoricalColorMapper(
 )
 
 plot = figure(
-    title="Parametric UMAP projection of MNIST test set",
+    title="Parametric UMAP projection of MNIST train set",
     width=800, height=800,
     tools="pan,wheel_zoom,box_zoom,reset,hover,save",
     active_scroll="wheel_zoom"
