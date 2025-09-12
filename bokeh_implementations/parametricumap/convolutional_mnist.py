@@ -15,23 +15,24 @@ x_train = x_train.astype("float32") / 255.0
 x_train = x_train[..., tf.newaxis]  
 
 encoder = Sequential([
-    layers.InputLayer(input_shape=(28, 28, 1)),
+    layers.Input(shape=(28, 28, 1)),  
     layers.Conv2D(32, kernel_size=3, activation="relu"),
     layers.MaxPooling2D(pool_size=2),
     layers.Conv2D(64, kernel_size=3, activation="relu"),
     layers.MaxPooling2D(pool_size=2),
     layers.Flatten(),
     layers.Dense(128, activation="relu"),
-    layers.Dense(64, activation="relu"),  
-    layers.Dense(2)  
+    layers.Dense(64, activation="relu"),
+    layers.Dense(2)
 ])
+
+x_train_flat = x_train.reshape((x_train.shape[0], -1)) 
 
 embedder = ParametricUMAP(
     encoder=encoder,
     dims=(28, 28, 1),  
     verbose=True,
+    keras_fit_kwargs={"epochs": 1, "batch_size": 128}
 )
 
-embedding = embedder.fit_transform(x_train)
-
-embedder.save(savingdir)
+embedding = embedder.fit_transform(x_train_flat)
