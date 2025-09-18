@@ -7,9 +7,14 @@ import os
 
 folder = os.path.join("datasets", "LSODOS")
 
+
 emin_global, emax_global = float("inf"), float("-inf")
 
-for fname in os.listdir(folder):
+file_list = [f for f in os.listdir(folder) if f.endswith(".json")]
+
+
+
+for fname in file_list:
     if not fname.endswith(".json"):
         continue
     fpath = os.path.join(folder, fname)
@@ -26,7 +31,7 @@ energy_grid = np.arange(emin_global, emax_global + dE, dE)
 
 rows = []
 
-for fname in os.listdir(folder):
+for fname in file_list:
     if not fname.endswith(".json"):
         continue
     fpath = os.path.join(folder, fname)
