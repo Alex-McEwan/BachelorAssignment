@@ -3,7 +3,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-material_name = "1000_CsAgLuCl_lsodos"  
+material_name = "1002_CsNaPrCl_lsodos"  
+
+
 
 csv_file = os.path.join("datasets", "output", "dos_dataset_interpolated.csv")
 df = pd.read_csv(csv_file)
