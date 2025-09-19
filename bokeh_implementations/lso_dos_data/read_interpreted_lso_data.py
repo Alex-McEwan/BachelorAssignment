@@ -5,8 +5,6 @@ import os
 
 material_name = "1002_CsNaPrCl_lsodos"  
 
-
-
 csv_file = os.path.join("datasets", "output", "dos_dataset_interpolated.csv")
 df = pd.read_csv(csv_file)
 
