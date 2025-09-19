@@ -12,7 +12,7 @@ emin_global, emax_global = float("inf"), float("-inf")
 
 file_list = [f for f in os.listdir(folder) if f.endswith(".json")]
 
-file_list = file_list[:1]  
+file_list = file_list[:500]  
 
 for fname in file_list:
     if not fname.endswith(".json"):
