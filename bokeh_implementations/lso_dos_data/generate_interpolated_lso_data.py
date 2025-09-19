@@ -12,7 +12,7 @@ emin_global, emax_global = float("inf"), float("-inf")
 
 file_list = [f for f in os.listdir(folder) if f.endswith(".json")]
 
-file_list = file_list[:500]  
+# file_list = file_list[:500]  
 
 for fname in file_list:
     if not fname.endswith(".json"):
@@ -26,7 +26,7 @@ for fname in file_list:
 
 print(f"Global energy range: {emin_global:.3f} eV → {emax_global:.3f} eV")
 
-dE = 0.001  
+dE = 0.01  
 energy_grid = np.arange(emin_global, emax_global + dE, dE)
 
 rows = []
@@ -53,6 +53,7 @@ for fname in file_list:
 
     material_name = Path(fname).stem
     rows.append([material_name, *dos_resampled])
+    print(f"Processed {material_name}, shape: {dos_resampled.shape}")
 
 colnames = ["material"] + [f"E={e:.3f}eV" for e in energy_grid]
 df = pd.DataFrame(rows, columns=colnames)
