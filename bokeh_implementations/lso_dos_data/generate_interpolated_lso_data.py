@@ -7,7 +7,6 @@ import os
 
 folder = os.path.join("datasets", "LSODOS")
 
-
 emin_global, emax_global = float("inf"), float("-inf")
 
 file_list = [f for f in os.listdir(folder) if f.endswith(".json")]
