@@ -8,8 +8,6 @@ material_name = "1002_CsNaPrCl_lsodos"
 csv_file = os.path.join("datasets", "output", "dos_dataset_interpolated.csv")
 df = pd.read_csv(csv_file)
 
-
-
 if material_name not in df['material'].values:
     print(f"\nERROR: Material '{material_name}' not found in dataset!")
     exit()
