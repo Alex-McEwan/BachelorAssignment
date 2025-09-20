@@ -21,7 +21,7 @@ X_sparse = sparse.csr_matrix(df[energy_columns].to_numpy())
 
 
 scaler = MaxAbsScaler()
-X_scaled = scaler.fit_transform(X_sparse)
+X_scaled = scaler.fit_transform(X_sparse, n_neighbors=20)
 
 print("started UMAP")
 reducer = umap.UMAP(random_state=42)
@@ -30,6 +30,8 @@ print("finished UMAP")
 
 SAVING_DIR = os.path.join("bokehfiles")
 os.makedirs(SAVING_DIR, exist_ok=True)
+
+FILE_NAME = "dos_umap_sparse.html"
 
 MATERIAL_STRING = "material"
 X_AXIS_STRING = "x"
@@ -54,14 +56,14 @@ plot.scatter(X_AXIS_STRING, Y_AXIS_STRING, source=source, size=6, alpha=0.7)
 
 plot.select_one(HoverTool).tooltips = [
     ("Material", f"@{MATERIAL_STRING}"),
-    ("UMAP-1", f"@{X_AXIS_STRING}{{0.00}}"),
-    ("UMAP-2", f"@{Y_AXIS_STRING}{{0.00}}"),
+    (X_AXIS_STRING, f"@{X_AXIS_STRING}{{0.00}}"),
+    (Y_AXIS_STRING, f"@{Y_AXIS_STRING}{{0.00}}"),
 ]
 
-plot.xaxis.axis_label = "UMAP-1"
-plot.yaxis.axis_label = "UMAP-2"
+plot.xaxis.axis_label = X_AXIS_STRING
+plot.yaxis.axis_label = Y_AXIS_STRING
 
-output_file(os.path.join(SAVING_DIR, "dos_umap_sparse.html"))
+output_file(os.path.join(SAVING_DIR, FILE_NAME))
 save(plot)
 
-print(f"Bokeh plot saved to {os.path.join(SAVING_DIR, 'dos_umap_sparse.html')}")
+print(f"Bokeh plot saved to {os.path.join(SAVING_DIR, FILE_NAME)}")
