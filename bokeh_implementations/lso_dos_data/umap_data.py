@@ -20,18 +20,20 @@ energy_columns = [col for col in df.columns if col != "material"]
 X_sparse = sparse.csr_matrix(df[energy_columns].to_numpy())
 
 
+N_NEIGHBORS = 20
+
 scaler = MaxAbsScaler()
-X_scaled = scaler.fit_transform(X_sparse, n_neighbors=20)
+X_scaled = scaler.fit_transform(X_sparse)
 
 print("started UMAP")
-reducer = umap.UMAP(random_state=42)
+reducer = umap.UMAP(n_neighbors=N_NEIGHBORS, random_state=42)
 X_umap = reducer.fit_transform(X_scaled)
 print("finished UMAP")
 
 SAVING_DIR = os.path.join("bokehfiles")
 os.makedirs(SAVING_DIR, exist_ok=True)
 
-FILE_NAME = "dos_umap_sparse.html"
+FILE_NAME = "dos_umap_sparse_high_n_neighbors.html"
 
 MATERIAL_STRING = "material"
 X_AXIS_STRING = "x"
@@ -46,7 +48,7 @@ plot_df = pd.DataFrame({
 source = ColumnDataSource(plot_df)
 
 plot = figure(
-    title="UMAP projection of DOS sparse dataset",
+    title=f"UMAP projection of DOS sparse dataset with {N_NEIGHBORS} neighbors",
     width=800, height=800,
     tools="pan,wheel_zoom,box_zoom,reset,hover,save",
     active_scroll="wheel_zoom"
