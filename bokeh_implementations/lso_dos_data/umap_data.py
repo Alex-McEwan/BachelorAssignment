@@ -17,7 +17,7 @@ materials = df["material"].values
 
 energy_columns = [col for col in df.columns if col != "material"]
 
-X_sparse = sparse.csr_matrix(df[energy_columns].to_numpy())
+X_sparse = sparse.csr_matrix(df[energy_columns].values)
 
 N_NEIGHBORS = 20
 
