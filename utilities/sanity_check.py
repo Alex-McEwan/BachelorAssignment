@@ -63,8 +63,26 @@ energies2 = [
             -24.45265,
 ]
 
-for i, energies in enumerate([energies1, energies2], start=1):
-    diffs = np.diff(energies)
-    print(f"Material {i}: mean spacing = {diffs.mean():.5f}, std = {diffs.std():.5e}")
-    print("All spacings:", diffs.tolist())
+
+
+
+materials = [energies1, energies2]
+
+for i in range(len(materials)):
+    energies = materials[i]
+
+    diffs = []
+    for j in range(1, len(energies)):
+        diff = energies[j] - energies[j - 1]
+        diffs.append(diff)
+
+    diffs_array = np.array(diffs)
+
+    mean_spacing = diffs_array.mean()
+    std_spacing = diffs_array.std()
+
+    print("Material", i + 1)
+    print("Mean spacing:", mean_spacing)
+    print("Std spacing:", std_spacing)
+    print("All spacings:", diffs_array.tolist())
     print()
