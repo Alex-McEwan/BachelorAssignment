@@ -19,7 +19,7 @@ energy_columns = [col for col in df.columns if col != "material"]
 
 X_sparse = sparse.csr_matrix(df[energy_columns].values)
 
-N_NEIGHBORS = 15
+N_NEIGHBORS = 20
 
 scaler = MaxAbsScaler()
 X_scaled = scaler.fit_transform(X_sparse)
@@ -32,7 +32,7 @@ print("finished UMAP")
 SAVING_DIR = os.path.join("bokehfiles")
 os.makedirs(SAVING_DIR, exist_ok=True)
 
-FILE_NAME = "dos_umap_sparse_5_ev_around_fermi.html"
+FILE_NAME = f"dos_umap_sparse_5_ev_around_fermi_{N_NEIGHBORS}_neighbors.html"
 
 MATERIAL_STRING = "material"
 X_AXIS_STRING = "x"
