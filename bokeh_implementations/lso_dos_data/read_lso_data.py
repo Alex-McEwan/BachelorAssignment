@@ -6,7 +6,9 @@ import os
 
 csv_file = os.path.join("datasets", "output", "dos_dataset_long.csv")
 json_folder = Path("datasets/LSODOS")  
-material_name = "1002_CsNaPrCl_lsodos"  
+material_name = "1131_CsTlAsCl_lsodos" 
+
+
 
 df = pd.read_csv(csv_file)
 
