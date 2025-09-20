@@ -8,7 +8,7 @@ from bokeh.plotting import figure, output_file, save
 from bokeh.models import ColumnDataSource, HoverTool, CategoricalColorMapper
 from bokeh.palettes import Category10
 
-model_path = r"bokeh_implementations/parametricumap/mnist_model"
+model_path = os.path.join("bokeh_implementations", "parametricumap", "mnist_model")
 embedder = load_ParametricUMAP(model_path)
 
 (x_train, y_train), (_, _) = mnist.load_data()
