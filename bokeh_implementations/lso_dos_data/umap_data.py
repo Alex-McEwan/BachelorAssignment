@@ -1,7 +1,10 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MaxAbsScaler
 import umap
+
+from scipy import sparse
 
 from bokeh.plotting import figure, output_file, save
 from bokeh.models import ColumnDataSource, HoverTool
@@ -13,10 +16,12 @@ df = pd.read_csv(csv_file)
 materials = df["material"].values
 
 energy_columns = [col for col in df.columns if col != "material"]
-X = df[energy_columns].to_numpy()
 
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
+X_sparse = sparse.csr_matrix(df[energy_columns].to_numpy())
+
+
+scaler = MaxAbsScaler()
+X_scaled = scaler.fit_transform(X_sparse)
 
 print("started UMAP")
 reducer = umap.UMAP(random_state=42)
@@ -39,7 +44,7 @@ plot_df = pd.DataFrame({
 source = ColumnDataSource(plot_df)
 
 plot = figure(
-    title="UMAP projection of DOS dataset",
+    title="UMAP projection of DOS sparse dataset",
     width=800, height=800,
     tools="pan,wheel_zoom,box_zoom,reset,hover,save",
     active_scroll="wheel_zoom"
@@ -56,7 +61,7 @@ plot.select_one(HoverTool).tooltips = [
 plot.xaxis.axis_label = "UMAP-1"
 plot.yaxis.axis_label = "UMAP-2"
 
-output_file(os.path.join(SAVING_DIR, "dos_umap.html"))
+output_file(os.path.join(SAVING_DIR, "dos_umap_sparse.html"))
 save(plot)
 
-print(f"Bokeh plot saved to {os.path.join(SAVING_DIR, 'dos_umap.html')}")
+print(f"Bokeh plot saved to {os.path.join(SAVING_DIR, 'dos_umap_sparse.html')}")
