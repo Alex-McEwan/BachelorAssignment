@@ -19,7 +19,6 @@ energy_columns = [col for col in df.columns if col != "material"]
 
 X_sparse = sparse.csr_matrix(df[energy_columns].to_numpy())
 
-
 N_NEIGHBORS = 20
 
 scaler = MaxAbsScaler()
