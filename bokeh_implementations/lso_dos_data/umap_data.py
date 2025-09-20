@@ -10,7 +10,7 @@ from bokeh.plotting import figure, output_file, save
 from bokeh.models import ColumnDataSource, HoverTool
 import os
 
-csv_file = os.path.join("datasets", "output", "dos_dataset_interpolated.csv")
+csv_file = os.path.join("datasets", "output", "dos_dataset_interpolated_5ev_around_fermi.csv")
 df = pd.read_csv(csv_file)
 
 materials = df["material"].values
@@ -20,19 +20,20 @@ energy_columns = [col for col in df.columns if col != "material"]
 X_sparse = sparse.csr_matrix(df[energy_columns].values)
 
 N_NEIGHBORS = 20
+DISTANCE_METRIC = "cosine"  
 
 scaler = MaxAbsScaler()
 X_scaled = scaler.fit_transform(X_sparse)
 
 print("started UMAP")
-reducer = umap.UMAP(n_neighbors=N_NEIGHBORS, random_state=42)
+reducer = umap.UMAP(n_neighbors=N_NEIGHBORS, metric=DISTANCE_METRIC, random_state=42)
 X_umap = reducer.fit_transform(X_scaled)
 print("finished UMAP")
 
 SAVING_DIR = os.path.join("bokehfiles")
 os.makedirs(SAVING_DIR, exist_ok=True)
 
-FILE_NAME = "dos_umap_sparse_high_n_neighbors.html"
+FILE_NAME = f"dos_umap_sparse_5_ev_around_fermi_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}.html"
 
 MATERIAL_STRING = "material"
 X_AXIS_STRING = "x"
@@ -47,7 +48,7 @@ plot_df = pd.DataFrame({
 source = ColumnDataSource(plot_df)
 
 plot = figure(
-    title=f"UMAP projection of DOS sparse dataset with {N_NEIGHBORS} neighbors",
+    title=f"UMAP projection of DOS sparse dataset at interval around fermi energy with {N_NEIGHBORS} neighbors ({DISTANCE_METRIC} metric)",
     width=800, height=800,
     tools="pan,wheel_zoom,box_zoom,reset,hover,save",
     active_scroll="wheel_zoom"
