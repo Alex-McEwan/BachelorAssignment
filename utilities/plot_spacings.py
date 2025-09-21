@@ -6,7 +6,7 @@ csv_path = os.path.join("datasets", "output", "average_spacings.csv")
 df = pd.read_csv(csv_path)
 
 plt.figure(figsize=(8, 5))
-counts, bins, patches = plt.hist(df["avg_spacing"], bins=100, edgecolor="black")
+counts, bins, patches = plt.hist(df["avg_spacing"], bins=80, edgecolor="black")
 
 for i in range(len(counts)):
     if counts[i] > 0:
