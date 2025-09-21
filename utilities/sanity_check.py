@@ -81,8 +81,5 @@ for i in range(len(materials)):
     mean_spacing = diffs_array.mean()
     std_spacing = diffs_array.std()
 
-    print("Material", i + 1)
     print("Mean spacing:", mean_spacing)
-    print("Std spacing:", std_spacing)
     print("All spacings:", diffs_array.tolist())
-    print()
