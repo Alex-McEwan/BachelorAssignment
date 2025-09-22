@@ -25,7 +25,10 @@ emax_global = MAXIMUM_BANDGAP_ACROSS_MATERIALS + 10
 
 print(f"Global energy range: {emin_global:.3f} eV → {emax_global:.3f} eV")
 
-dE = 0.00552
+LOWEST_AVG_ENERGY_SPACING = 0.00552
+
+
+dE = LOWEST_AVG_ENERGY_SPACING
 energy_grid = np.arange(emin_global, emax_global + dE, dE)
 
 rows = []
