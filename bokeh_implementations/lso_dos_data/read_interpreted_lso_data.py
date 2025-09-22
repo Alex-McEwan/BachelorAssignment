@@ -7,7 +7,7 @@ material_name = "1131_CsTlAsCl_lsodos"
 
 
 
-csv_file = os.path.join("datasets", "output", "dos_dataset_interpolated.csv")
+csv_file = os.path.join("datasets", "output", "dos_dataset_interpolated_10_ev_cutoff_after_bandgap.csv")
 df = pd.read_csv(csv_file)
 
 if material_name not in df['material'].values:
@@ -39,9 +39,9 @@ plt.title(f"Density of States for {material_name}")
 plt.legend()
 plt.tight_layout()
 
-output_dir = os.path.join("plots", "lso_interpolated")
+output_dir = os.path.join("plots", "lso_interpolated_10_ev_cutoff_after_bandgap")
 os.makedirs(output_dir, exist_ok=True)
-output_file = os.path.join(output_dir, f"{material_name}_interpolated_dos.png")
+output_file = os.path.join(output_dir, f"{material_name}_interpolated_dos_10_ev_cutoff_after_bandgap.png")
 plt.savefig(output_file, dpi=300, bbox_inches="tight")
 print(f"Plot saved to: {output_file}")
 plt.close()  
