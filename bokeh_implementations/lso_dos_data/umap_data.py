@@ -10,8 +10,11 @@ from bokeh.plotting import figure, output_file, save
 from bokeh.models import ColumnDataSource, HoverTool
 import os
 
-csv_file = os.path.join("datasets", "output", "dos_dataset_interpolated_5ev_around_fermi.csv")
+csv_file = os.path.join("datasets", "output", "dos_dataset_interpolated_10_ev_cutoff_after_bandgap.csv")
 df = pd.read_csv(csv_file)
+
+
+
 
 materials = df["material"].values
 
@@ -19,8 +22,8 @@ energy_columns = [col for col in df.columns if col != "material"]
 
 X_sparse = sparse.csr_matrix(df[energy_columns].values)
 
-N_NEIGHBORS = 20
-DISTANCE_METRIC = "cosine"  
+N_NEIGHBORS = 15
+DISTANCE_METRIC = "euclidean"
 
 scaler = MaxAbsScaler()
 X_scaled = scaler.fit_transform(X_sparse)
@@ -33,7 +36,7 @@ print("finished UMAP")
 SAVING_DIR = os.path.join("bokehfiles")
 os.makedirs(SAVING_DIR, exist_ok=True)
 
-FILE_NAME = f"dos_umap_sparse_5_ev_around_fermi_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}.html"
+FILE_NAME = f"dos_sparse_umap_10ev_after_bandgap_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}.html"
 
 MATERIAL_STRING = "material"
 X_AXIS_STRING = "x"
