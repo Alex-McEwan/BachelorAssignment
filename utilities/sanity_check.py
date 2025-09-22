@@ -63,9 +63,6 @@ energies2 = [
             -24.45265,
 ]
 
-
-
-
 materials = [energies1, energies2]
 
 for i in range(len(materials)):
