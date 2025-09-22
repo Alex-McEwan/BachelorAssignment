@@ -22,7 +22,7 @@ emax_global = 9.82035 + 10
 
 print(f"Global energy range: {emin_global:.3f} eV → {emax_global:.3f} eV")
 
-dE = 0.01
+dE = 0.00552
 energy_grid = np.arange(emin_global, emax_global + dE, dE)
 
 rows = []
@@ -54,7 +54,7 @@ df = pd.DataFrame(rows, columns=colnames)
 
 output_dir = os.path.join("datasets", "output")
 os.makedirs(output_dir, exist_ok=True)
-out_file = os.path.join(output_dir, "dos_dataset_interpolated.csv")
+out_file = os.path.join(output_dir, "dos_dataset_interpolated_10_ev_cutoff_after_bandgap.csv")
 df.to_csv(out_file, index=False)
 
 print("Final shape:", df.shape)
