@@ -5,6 +5,11 @@ import os
 csv_path = os.path.join("datasets", "output", "average_spacings.csv")
 df = pd.read_csv(csv_path)
 
+min_spacing = df["avg_spacing"].min() 
+min_spacing_material = df[df["avg_spacing"] == min_spacing]["material"].iloc[0]  
+
+print(f"Lowest spacing: {min_spacing:.5f} eV (material: {min_spacing_material})")
+
 plt.figure(figsize=(8, 5))
 counts, bins, patches = plt.hist(df["avg_spacing"], bins=80, edgecolor="black")
 
