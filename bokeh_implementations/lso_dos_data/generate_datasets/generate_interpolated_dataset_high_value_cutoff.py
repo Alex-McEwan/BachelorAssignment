@@ -18,7 +18,10 @@ for fname in file_list:
     energies = np.array(data["tdos"]["energies"], dtype=float)
     emin_global = min(emin_global, energies.min())
 
-emax_global = 9.82035 + 10
+MAXIMUM_BANDGAP_ACROSS_MATERIALS = 9.82035
+
+
+emax_global = MAXIMUM_BANDGAP_ACROSS_MATERIALS + 10
 
 print(f"Global energy range: {emin_global:.3f} eV → {emax_global:.3f} eV")
 
