@@ -23,11 +23,13 @@ for fname in file_list:
     dens_dn = np.array(data["tdos"]["densities"]["-1"], dtype=float)
     dos = dens_up + dens_dn
 
+
+    #todo increase range to 10 eV around fermi level
     emin = efermi - 5.0
     emax = efermi + 5.0
     energy_grid = np.arange(emin, emax + dE, dE)
 
-    interp = interp1d(
+    interp = interp1d(  
         energies, dos,
         bounds_error=False, 
         fill_value=0.0,
