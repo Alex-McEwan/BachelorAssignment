@@ -8,15 +8,22 @@ from scipy import sparse
 
 from bokeh.plotting import figure, output_file, save
 from bokeh.models import ColumnDataSource, HoverTool
+from bokeh.models import LinearColorMapper, ColorBar, BasicTicker
+from bokeh.palettes import Viridis256
+
 import os
 
 csv_file = os.path.join("datasets", "output", "dos_dataset_interpolated_10_ev_cutoff_after_bandgap.csv")
-df = pd.read_csv(csv_file)
+bandgap_csv_file = os.path.join("datasets", "output", "material_bandgap.csv")
 
+dos_df = pd.read_csv(csv_file)
+bandgap_df = pd.read_csv(bandgap_csv_file)
 
+df = dos_df.merge(bandgap_df, on="material", how="inner")
 
 
 materials = df["material"].values
+bandgaps = df["bandgap"].values
 
 energy_columns = [col for col in df.columns if col != "material"]
 
@@ -41,12 +48,20 @@ FILE_NAME = f"dos_sparse_umap_10ev_after_bandgap_{N_NEIGHBORS}_neighbors_{DISTAN
 MATERIAL_STRING = "material"
 X_AXIS_STRING = "x"
 Y_AXIS_STRING = "y"
+BANDGAP_STRING = "bandgap"
 
 plot_df = pd.DataFrame({
     MATERIAL_STRING: materials,
     X_AXIS_STRING: X_umap[:, 0],
     Y_AXIS_STRING: X_umap[:, 1],
+    BANDGAP_STRING: bandgaps
 })
+
+color_mapping = LinearColorMapper(
+    palette=Viridis256,
+    low=float(plot_df[BANDGAP_STRING].min()),
+    high=float(plot_df[BANDGAP_STRING].max())
+)
 
 source = ColumnDataSource(plot_df)
 
@@ -57,7 +72,8 @@ plot = figure(
     active_scroll="wheel_zoom"
 )
 
-plot.scatter(X_AXIS_STRING, Y_AXIS_STRING, source=source, size=6, alpha=0.7)
+plot.scatter(X_AXIS_STRING, Y_AXIS_STRING, source=source, size=6, alpha=0.7, 
+             color={"field": BANDGAP_STRING, "transform": color_mapping})
 
 plot.select_one(HoverTool).tooltips = [
     ("Material", f"@{MATERIAL_STRING}"),
@@ -67,6 +83,16 @@ plot.select_one(HoverTool).tooltips = [
 
 plot.xaxis.axis_label = X_AXIS_STRING
 plot.yaxis.axis_label = Y_AXIS_STRING
+
+color_bar = ColorBar(
+    color_mapper=color_mapping,
+    ticker=BasicTicker(),
+    label_standoff=8,
+    location=(0, 0),
+    title="Bandgap (eV)"
+)
+plot.add_layout(color_bar, "right")
+
 
 output_file(os.path.join(SAVING_DIR, FILE_NAME))
 save(plot)
