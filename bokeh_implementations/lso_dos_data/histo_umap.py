@@ -16,23 +16,18 @@ from bokeh.palettes import Viridis256
 
 
 
-# ----------------------------
-# SETTINGS
-# ----------------------------
+
 INPUT_FOLDER = os.path.join("datasets", "completedosjsons_lsodos")
 BANDGAP_FILE = os.path.join("datasets", "output", "material_bandgap.csv")
 
-# fingerprint settings
-MIN_E = -5.0   # energy window below Ef
-MAX_E =  5.0   # energy window above Ef
-N_BINS = 256   # histogram bins
-FP_TYPE = "summed_pdos"  # or "tdos", "s_pdos", etc.
+MIN_E = -5.0   
+MAX_E =  5.0   
+N_BINS = 256   
+FP_TYPE = "summed_pdos"  
 
-# UMAP settings
 N_NEIGHBORS = 15
 DISTANCE_METRIC = "euclidean"
 
-# Output settings
 OUTPUT_DIR = os.path.join("datasets", "output")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 CSV_OUT = os.path.join(OUTPUT_DIR, f"dos_fingerprints_{FP_TYPE}_{N_BINS}bins.csv")
@@ -45,9 +40,6 @@ BOKEH_FILE = os.path.join(
 )
 
 
-# ----------------------------
-# STEP 1: Build dataset
-# ----------------------------
 rows = []
 for fname in os.listdir(INPUT_FOLDER):
     if not fname.endswith(".json"):
@@ -74,18 +66,14 @@ for fname in os.listdir(INPUT_FOLDER):
 
     print(f"Processed {material}, fp length={len(fp.densities)}")
 
-# make dataframe
 colnames = ["material"] + [f"bin{i}" for i in range(N_BINS)]
 df = pd.DataFrame(rows, columns=colnames)
 
-# save CSV
 df.to_csv(CSV_OUT, index=False)
 print(f"Saved fingerprints to {CSV_OUT}")
 
 
-# ----------------------------
-# STEP 2: Merge with bandgaps
-# ----------------------------
+
 bandgap_df = pd.read_csv(BANDGAP_FILE)
 df = df.merge(bandgap_df, on="material", how="inner")
 
@@ -96,18 +84,14 @@ X = sparse.csr_matrix(df.drop(columns=["material", "bandgap"]).values)
 X_scaled = MaxAbsScaler().fit_transform(X)
 
 
-# ----------------------------
-# STEP 3: Run UMAP
-# ----------------------------
+
 print("Started UMAP...")
 reducer = umap.UMAP(n_neighbors=N_NEIGHBORS, metric=DISTANCE_METRIC, random_state=42)
 X_umap = reducer.fit_transform(X_scaled)
 print("Finished UMAP.")
 
 
-# ----------------------------
-# STEP 4: Make Bokeh plot
-# ----------------------------
+
 plot_df = pd.DataFrame({
     "material": materials,
     "x": X_umap[:, 0],
