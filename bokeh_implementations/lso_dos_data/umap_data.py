@@ -13,7 +13,7 @@ from bokeh.palettes import Viridis256
 
 import os
 
-csv_file = os.path.join("datasets", "output", "dos_dataset_interpolated_5_ev_cutoff_after_bandgap.csv")
+csv_file = os.path.join("datasets", "output", "dos_dataset_histogram_5_ev_cutoff_after_bandgap.csv")
 bandgap_csv_file = os.path.join("datasets", "output", "material_bandgap.csv")
 
 dos_df = pd.read_csv(csv_file)
@@ -29,7 +29,7 @@ energy_columns = [col for col in df.columns if col != "material"]
 
 X_sparse = sparse.csr_matrix(df[energy_columns].values)
 
-N_NEIGHBORS = 15
+N_NEIGHBORS = 20
 DISTANCE_METRIC = "euclidean"
 
 scaler = MaxAbsScaler()
@@ -40,10 +40,12 @@ reducer = umap.UMAP(n_neighbors=N_NEIGHBORS, metric=DISTANCE_METRIC, random_stat
 X_umap = reducer.fit_transform(X_scaled)
 print("finished UMAP")
 
-SAVING_DIR = os.path.join("bokehfiles")
+DIRECTORY = "dos_sparse_histogram"
+
+SAVING_DIR = os.path.join("bokehfiles", DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
-FILE_NAME = f"dos_sparse_umap_5ev_after_bandgap_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}.html"
+FILE_NAME = f"dos_sparse_histogram_umap_5ev_after_CBM_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}.html"
 
 MATERIAL_STRING = "material"
 X_AXIS_STRING = "x"
