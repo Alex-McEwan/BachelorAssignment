@@ -6,6 +6,8 @@ from pathlib import Path
 import os
 import random
 
+# Set random seed for reproducibility
+random.seed(42)
 csv_long = os.path.join("datasets", "output", "dos_dataset_long.csv")
 csv_hist = os.path.join("datasets", "output", "dos_dataset_histogram_5_ev_cutoff_after_bandgap.csv")
 json_folder = Path("datasets/LSODOS")
