@@ -5,6 +5,7 @@ csv_file = os.path.join("datasets", "data_luc", "CombinedHDPinfo_lsodos.csv")
 
 df = pd.read_csv(csv_file)
 
-max_bandgap = df["bandgap"].max()
+max_conduction_band_minimum = df["CBM"].max()
 
-print("Largest bandgap:", max_bandgap, "eV")
+print(f"Maximum conduction band minimum (CBM) across all materials: {max_conduction_band_minimum:.5f} eV")
+
