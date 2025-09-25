@@ -30,7 +30,7 @@ energy_columns = [col for col in df.columns if col != "material"]
 X_sparse = sparse.csr_matrix(df[energy_columns].values)
 
 N_NEIGHBORS = 15
-DISTANCE_METRIC = "euclidean"
+DISTANCE_METRIC = "cosine"
 
 scaler = MaxAbsScaler()
 X_scaled = scaler.fit_transform(X_sparse)
@@ -40,7 +40,9 @@ reducer = umap.UMAP(n_neighbors=N_NEIGHBORS, metric=DISTANCE_METRIC, random_stat
 X_umap = reducer.fit_transform(X_scaled)
 print("finished UMAP")
 
-SAVING_DIR = os.path.join("bokehfiles")
+DIRECTORY = "dos_sparse_histogram"
+
+SAVING_DIR = os.path.join("bokehfiles", DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
 FILE_NAME = f"dos_sparse_histogram_umap_5ev_after_CBM_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}.html"
