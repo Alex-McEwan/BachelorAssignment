@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:latest-gpu
+FROM tensorflow/tensorflow:2.15.0-gpu
 
 # prevent python from writing .pyc files and buffering output
 ENV PYTHONDONTWRITEBYTECODE=1 \
