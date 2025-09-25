@@ -18,10 +18,10 @@ for fname in file_list:
     energies = np.array(data["tdos"]["energies"], dtype=float)
     emin_global = min(emin_global, energies.min())
 
-MAXIMUM_BANDGAP_ACROSS_MATERIALS = 9.82035
+CONDUCTION_BAND_MINIMUM_ACROSS_ALL_MATERIALS = 9.80837
 
 
-emax_global = MAXIMUM_BANDGAP_ACROSS_MATERIALS + 10
+emax_global = CONDUCTION_BAND_MINIMUM_ACROSS_ALL_MATERIALS + 5.0
 
 print(f"Global energy range: {emin_global:.3f} eV → {emax_global:.3f} eV")
 
@@ -60,7 +60,7 @@ df = pd.DataFrame(rows, columns=colnames)
 
 output_dir = os.path.join("datasets", "output")
 os.makedirs(output_dir, exist_ok=True)
-out_file = os.path.join(output_dir, "dos_dataset_interpolated_10_ev_cutoff_after_bandgap.csv")
+out_file = os.path.join(output_dir, "dos_dataset_interpolated_5_ev_cutoff_after_bandgap.csv")
 df.to_csv(out_file, index=False)
 
 print("Final shape:", df.shape)
