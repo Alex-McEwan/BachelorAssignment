@@ -13,7 +13,7 @@ from bokeh.palettes import Viridis256
 
 import os
 
-csv_file = os.path.join("datasets", "output", "dos_dataset_interpolated_10_ev_cutoff_after_bandgap.csv")
+csv_file = os.path.join("datasets", "output", "dos_dataset_interpolated_5_ev_cutoff_after_bandgap.csv")
 bandgap_csv_file = os.path.join("datasets", "output", "material_bandgap.csv")
 
 dos_df = pd.read_csv(csv_file)
@@ -43,7 +43,7 @@ print("finished UMAP")
 SAVING_DIR = os.path.join("bokehfiles")
 os.makedirs(SAVING_DIR, exist_ok=True)
 
-FILE_NAME = f"dos_sparse_umap_10ev_after_bandgap_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}.html"
+FILE_NAME = f"dos_sparse_umap_5ev_after_bandgap_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}.html"
 
 MATERIAL_STRING = "material"
 X_AXIS_STRING = "x"
