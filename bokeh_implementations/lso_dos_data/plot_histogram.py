@@ -19,7 +19,7 @@ energies = np.array([float(c.replace("E=", "").replace("eV", "")) for c in energ
 dos_values = material_row[energy_columns].to_numpy(dtype=float)
 
 plt.figure(figsize=(10, 6))
-plt.bar(energies, dos_values, width=energies[1] - energies[0], align='center', alpha=0.7, edgecolor='black')
+plt.bar(energies, dos_values, width=energies[1] - energies[0], align='center', alpha=0.7, edgecolor='blue')
 
 plt.xlabel("Energy (eV)")
 plt.ylabel("Total DOS (states/eV)")
