@@ -1,18 +1,15 @@
-FROM python:3.12-slim
+FROM tensorflow/tensorflow:2.15.0-gpu
 
-# prevent python from writing .pyc files and buffering output
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-# system deps if needed (e.g. for numpy, scipy, umap, bokeh)
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
+        git \
     && rm -rf /var/lib/apt/lists/*
 
-# install python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# mount your code later, so only keep requirements in the image
