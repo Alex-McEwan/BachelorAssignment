@@ -1,1 +1,4 @@
 A bachelor’s assignment attempting to apply UMAP to a materials dataset to visualize that dataset. The overview of what i got done already can be found here: https://alex-mcewan.github.io/BachelorAssignment/
+
+
+lets see if we can commit from the container
