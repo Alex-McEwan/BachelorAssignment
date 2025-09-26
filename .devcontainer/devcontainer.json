@@ -1,7 +1,7 @@
 {
-  "name": "umap-project",
+  "name": "umap-dev-container",
   "dockerComposeFile": "../docker-compose.yml",
-  "service": "umap_dev",
+  "service": "umap",
   "workspaceFolder": "/app",
   "settings": {
     "terminal.integrated.defaultProfile.linux": "bash"
