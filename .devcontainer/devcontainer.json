@@ -1,0 +1,17 @@
+{
+  "name": "My Project Dev",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "your-service-name",
+  "workspaceFolder": "/app",
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+  "extensions": [
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "github.vscode-github-actions",
+    "ms-toolsai.jupyter",
+    "streetsidesoftware.code-spell-checker",
+    "mechatroner.rainbow-csv"
+  ]
+}
