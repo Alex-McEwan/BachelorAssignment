@@ -12,6 +12,7 @@
     "github.vscode-github-actions",
     "ms-toolsai.jupyter",
     "streetsidesoftware.code-spell-checker",
-    "mechatroner.rainbow-csv"
+    "mechatroner.rainbow-csv",
+    "ritwickdey.liveserver"
   ]
 }
