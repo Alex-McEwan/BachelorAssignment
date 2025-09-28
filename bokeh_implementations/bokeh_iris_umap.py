@@ -64,3 +64,7 @@ plot.legend.location = "top_left"
 os.makedirs(saving_dir, exist_ok=True)
 output_file(f"{saving_dir}/iris_umap_bokeh.html")
 save(plot)
+
+
+
+
