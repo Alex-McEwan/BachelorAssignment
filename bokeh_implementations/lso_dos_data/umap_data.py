@@ -29,7 +29,7 @@ energy_columns = [col for col in df.columns if col != "material"]
 
 X_sparse = sparse.csr_matrix(df[energy_columns].values)
 
-N_NEIGHBORS = 30
+N_NEIGHBORS = 15
 DISTANCE_METRIC = "euclidean"
 
 scaler = MaxAbsScaler()
