@@ -21,13 +21,14 @@ energy_columns = [col for col in df.columns if col not in ["material", "bandgap"
 X_sparse = sparse.csr_matrix(df[energy_columns].values)
 
 N_NEIGHBORS = 15
-DISTANCE_METRIC = "euclidean"
+DISTANCE_METRIC = "cosine"
+DENSMAP = True
 
 scaler = MaxAbsScaler()
 X_scaled = scaler.fit_transform(X_sparse)
 
 print("started UMAP")
-reducer = umap.UMAP(n_neighbors=N_NEIGHBORS, metric=DISTANCE_METRIC, random_state=42)
+reducer = umap.UMAP(n_neighbors=N_NEIGHBORS, metric=DISTANCE_METRIC, random_state=42, densmap=DENSMAP)
 X_umap = reducer.fit_transform(X_scaled)
 print("finished UMAP")
 
@@ -46,7 +47,7 @@ DIRECTORY = "dos_sparse_histogram_halide_coloring"
 SAVING_DIR = os.path.join("bokehfiles", DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
-FILE_NAME = f"dos_sparse_histogram_umap_halide_5_ev_after_cbm_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}.html"
+FILE_NAME = f"dos_sparse_histogram_umap_halide_5_ev_after_cbm_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
 
 MATERIAL_STRING = "material"
 X_AXIS_STRING = "x"
