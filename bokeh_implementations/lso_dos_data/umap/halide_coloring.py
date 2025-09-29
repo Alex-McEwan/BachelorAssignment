@@ -21,7 +21,7 @@ energy_columns = [col for col in df.columns if col not in ["material", "bandgap"
 X_sparse = sparse.csr_matrix(df[energy_columns].values)
 
 N_NEIGHBORS = 15
-DISTANCE_METRIC = "cosine"
+DISTANCE_METRIC = "euclidean"
 
 scaler = MaxAbsScaler()
 X_scaled = scaler.fit_transform(X_sparse)
