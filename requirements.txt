@@ -1,7 +1,7 @@
-pandas
-scikit-learn
-umap-learn
-bokeh
-matplotlib
-seaborn
-tensorflow
+pandas==2.3.2
+scikit-learn==1.7.2
+umap-learn==0.5.9.post2
+bokeh==3.8.0
+matplotlib==3.10.6
+seaborn==0.13.2
+tensorflow==2.15.0
