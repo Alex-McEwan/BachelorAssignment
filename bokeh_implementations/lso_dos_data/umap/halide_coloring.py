@@ -9,7 +9,7 @@ from bokeh.palettes import Category10
 import os
 import re
 
-csv_file = os.path.join("datasets", "output", "dos_dataset_histogram_custom.csv")
+csv_file = os.path.join("datasets", "output", "dos_dataset_histogram_5_ev_cutoff_after_bandgap.csv")
 bandgap_csv_file = os.path.join("datasets", "output", "material_bandgap.csv")
 
 dos_df = pd.read_csv(csv_file)
@@ -43,7 +43,7 @@ def extract_halide(name: str) -> str:
 
 halides = [extract_halide(m) for m in materials]
 
-DIRECTORY = "dos_sparse_histogram_halide_coloring_selective_site"
+DIRECTORY = "dos_sparse_histogram_halide_coloring"
 SAVING_DIR = os.path.join("bokehfiles", DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
