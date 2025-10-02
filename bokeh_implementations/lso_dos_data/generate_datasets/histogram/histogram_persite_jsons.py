@@ -48,13 +48,13 @@ for fname in file_list:
         if str(site_index) in tdos_per_site:
             site_data = tdos_per_site[str(site_index)]
             if "densities" in site_data and str(spin) in site_data["densities"]:
-                dens = np.array(site_data["densities"][str(spin)], dtype=float)
+                dos = np.array(site_data["densities"][str(spin)], dtype=float)
                 site_energies = np.array(site_data["energies"], dtype=float)
             else:
                 raise ValueError(f"Missing densities or spin {spin} for site {site_index} in file {fname}")
         else:
             raise ValueError(f"Site index {site_index} not found in file {fname}")
-        hist, _ = np.histogram(site_energies, bins=bin_edges, weights=dens)
+        hist, _ = np.histogram(site_energies, bins=bin_edges, weights=dos)
         row.extend(hist)
 
     rows.append(row)
