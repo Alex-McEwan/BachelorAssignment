@@ -4,22 +4,17 @@ import pandas as pd
 from pathlib import Path
 import os
 
-# ---------------- CONFIG ----------------
 folder = os.path.join("datasets", "lsodos_persitejsons_250930")
 output_dir = os.path.join("datasets", "output")
 os.makedirs(output_dir, exist_ok=True)
 
-# Which channels to extract: [site_index, spin]
-# spin: +1 = up, -1 = down
-CHANNELS = [[0, 1], [1, 1], [0, -1], [1, -1]]  # example: B1.up, B2.up, B1.down, B2.down
+CHANNELS = [[0, 1], [1, 1], [0, -1], [1, -1]]  
 
 CONDUCTION_BAND_MINIMUM_ACROSS_ALL_MATERIALS = 9.80837
 LOWEST_AVG_ENERGY_SPACING = 0.00552
 dE = LOWEST_AVG_ENERGY_SPACING
 emax_global = CONDUCTION_BAND_MINIMUM_ACROSS_ALL_MATERIALS + 5.0
-# ----------------------------------------
 
-# First pass: find global minimum energy
 emin_global = float("inf")
 file_list = [f for f in os.listdir(folder) if f.endswith(".json")]
 for fname in file_list:
@@ -29,13 +24,11 @@ for fname in file_list:
     energies = np.array(data["tdos"]["energies"], dtype=float)
     emin_global = min(emin_global, energies.min())
 
-# Build energy bins
 bin_edges = np.arange(emin_global, emax_global + dE, dE)
 bin_centers = 0.5 * (bin_edges[:-1] + bin_edges[1:])
 
 rows = []
 
-# prepare folder to save raw data
 raw_output_dir = os.path.join(output_dir, "raw_per_channel")
 one_site_hist_dir = os.path.join(output_dir, "one_site_histograms")
 os.makedirs(raw_output_dir, exist_ok=True)
@@ -48,7 +41,6 @@ for fname in file_list:
     with open(fpath, "r") as f:
         data = json.load(f)
 
-    # skip if no per-site DOS or if B2 missing
     if "tdos_per_site" not in data:
         print(f"Skipping {fname} (no tdos_per_site)")
         continue
@@ -68,13 +60,10 @@ for fname in file_list:
         dos = np.array(site_data["densities"][spin_key], dtype=float)
         site_energies = np.array(site_data["energies"], dtype=float)
 
-        # ----- save raw data for this channel -----
         raw_df = pd.DataFrame({"Energy(eV)": site_energies, "DOS": dos})
         raw_filename = f"{material_name}_site{site_index}_spin{spin}_raw.csv"
         raw_df.to_csv(os.path.join(raw_output_dir, raw_filename), index=False)
-        # -----------------------------------------
 
-        # ----- histogram into global bins -----
         hist, _ = np.histogram(site_energies, bins=bin_edges, weights=dos)
         row.extend(hist)
         hist_df = pd.DataFrame({
