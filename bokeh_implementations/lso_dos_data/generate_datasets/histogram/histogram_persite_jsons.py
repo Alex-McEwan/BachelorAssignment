@@ -41,6 +41,11 @@ for fname in file_list:
         data = json.load(f)
 
     tdos_per_site = data["tdos_per_site"]
+    if "9" not in tdos_per_site:
+        print(f"Skipping {fname} (vacancy ordered, B2 missing)")
+        continue
+
+
     material_name = Path(fname).stem
     row = [material_name]
 
@@ -59,11 +64,8 @@ for fname in file_list:
 
     rows.append(row)
 
+rows = [r for r in rows if any(v != 0 for v in r)]
 
-
-
-
-# Build column names
 energy_cols = [f"E={e:.3f}eV" for e in bin_centers]
 colnames = ["material"] + [f"{site}_{spin}_{e}"
                            for site, spin in CHANNELS
