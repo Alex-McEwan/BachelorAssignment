@@ -37,7 +37,9 @@ rows = []
 
 # prepare folder to save raw data
 raw_output_dir = os.path.join(output_dir, "raw_per_channel")
+one_site_hist_dir = os.path.join(output_dir, "one_site_histograms")
 os.makedirs(raw_output_dir, exist_ok=True)
+os.makedirs(one_site_hist_dir, exist_ok=True)
 
 for fname in file_list:
     fpath = os.path.join(folder, fname)
@@ -80,7 +82,7 @@ for fname in file_list:
         "DOS_binned": hist
         })
         hist_filename = f"{material_name}_site{site_index}_spin{spin}_hist.csv"
-        hist_df.to_csv(os.path.join(raw_output_dir, hist_filename), index=False)
+        hist_df.to_csv(os.path.join(one_site_hist_dir, hist_filename), index=False)
 
         
 
