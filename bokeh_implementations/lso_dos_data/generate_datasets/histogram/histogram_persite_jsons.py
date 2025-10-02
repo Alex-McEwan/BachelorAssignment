@@ -40,25 +40,28 @@ for fname in file_list:
     with open(fpath, "r") as f:
         data = json.load(f)
 
-    energies = np.array(data["tdos"]["energies"], dtype=float)
+    tdos_per_site = data["tdos_per_site"]
     material_name = Path(fname).stem
     row = [material_name]
 
-    for site_index, spin in CHANNELS: 
-        site_data = data.get("tdos_per_site", {}).get(str(site_index))
-        if site_data is None or "densities" not in site_data:
-            dens = None
+    for site_index, spin in CHANNELS:
+        if str(site_index) in tdos_per_site:
+            site_data = tdos_per_site[str(site_index)]
+            if "densities" in site_data and str(spin) in site_data["densities"]:
+                dens = np.array(site_data["densities"][str(spin)], dtype=float)
+                site_energies = np.array(site_data["energies"], dtype=float)
+            else:
+                raise ValueError(f"Missing densities or spin {spin} for site {site_index} in file {fname}")
         else:
-            dens = np.array(site_data["densities"].get(str(spin)), dtype=float)
-
-        if dens is None or len(dens) == 0:
-            # fill zeros if channel not present
-            row.extend([0.0] * (len(bin_edges) - 1))
-        else:
-            hist, _ = np.histogram(energies, bins=bin_edges, weights=dens)
-            row.extend(hist)
+            raise ValueError(f"Site index {site_index} not found in file {fname}")
+        hist, _ = np.histogram(site_energies, bins=bin_edges, weights=dens)
+        row.extend(hist)
 
     rows.append(row)
+
+
+
+
 
 # Build column names
 energy_cols = [f"E={e:.3f}eV" for e in bin_centers]
