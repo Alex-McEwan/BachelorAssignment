@@ -17,7 +17,7 @@ emax_global = CONDUCTION_BAND_MINIMUM_ACROSS_ALL_MATERIALS + 5.0
 
 emin_global = float("inf")
 
-file_list = [f for f in os.listdir(folder) if f.endswith(".json")][:100]
+file_list = [f for f in os.listdir(folder) if f.endswith(".json")]
 for fname in file_list:
     fpath = os.path.join(folder, fname)
     with open(fpath, "r") as f:
