@@ -16,7 +16,8 @@ dE = LOWEST_AVG_ENERGY_SPACING
 emax_global = CONDUCTION_BAND_MINIMUM_ACROSS_ALL_MATERIALS + 5.0
 
 emin_global = float("inf")
-file_list = [f for f in os.listdir(folder) if f.endswith(".json")]
+
+file_list = [f for f in os.listdir(folder) if f.endswith(".json")][:100]
 for fname in file_list:
     fpath = os.path.join(folder, fname)
     with open(fpath, "r") as f:
@@ -49,7 +50,8 @@ for fname in file_list:
         print(f"Skipping {fname} (vacancy ordered, B2 missing)")
         continue
 
-    material_name = Path(fname).stem
+    material_name = Path(fname).stem[:-len("_persite")]
+
     row = [material_name]
 
     for site_index, spin in CHANNELS:
