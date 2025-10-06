@@ -13,7 +13,7 @@ from bokeh.palettes import Viridis256
 
 import os
 
-csv_file = os.path.join("datasets", "output", "dos_dataset_histogram_5_ev_cutoff_after_bandgap_spin_down.csv")
+csv_file = os.path.join("datasets", "output", "dos_dataset_histogram_custom.csv")
 bandgap_csv_file = os.path.join("datasets", "output", "material_bandgap.csv")
 
 dos_df = pd.read_csv(csv_file)
@@ -40,12 +40,12 @@ reducer = umap.UMAP(n_neighbors=N_NEIGHBORS, metric=DISTANCE_METRIC, random_stat
 X_umap = reducer.fit_transform(X_scaled)
 print("finished UMAP")
 
-DIRECTORY = "dos_sparse_histogram_spin_seperated"
+DIRECTORY = "dos_sparse_histogram_custom_bandgap_coloring"
 
 SAVING_DIR = os.path.join("bokehfiles", DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
-FILE_NAME = f"dos_sparse_histogram_umap_5ev_after_CBM_spin_down_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}.html"
+FILE_NAME = f"dos_sparse_histogram_custom_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}.html"
 
 MATERIAL_STRING = "material"
 X_AXIS_STRING = "x"
