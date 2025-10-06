@@ -12,18 +12,14 @@ CHANNELS = [[0, 1], [1, 1], [0, -1], [1, -1]]
 
 CONDUCTION_BAND_MINIMUM_ACROSS_ALL_MATERIALS = 9.80837
 LOWEST_AVG_ENERGY_SPACING = 0.00552
+VALENCE_BAND_MAXIMUM_ACROSS_ALL_MATERIALS = -0.00554
 dE = LOWEST_AVG_ENERGY_SPACING
 emax_global = CONDUCTION_BAND_MINIMUM_ACROSS_ALL_MATERIALS + 5.0
 
-emin_global = float("inf")
+emin_global = VALENCE_BAND_MAXIMUM_ACROSS_ALL_MATERIALS - 5.0
 
 file_list = [f for f in os.listdir(folder) if f.endswith(".json")]
-for fname in file_list:
-    fpath = os.path.join(folder, fname)
-    with open(fpath, "r") as f:
-        data = json.load(f)
-    energies = np.array(data["tdos"]["energies"], dtype=float)
-    emin_global = min(emin_global, energies.min())
+
 
 bin_edges = np.arange(emin_global, emax_global + dE, dE)
 bin_centers = 0.5 * (bin_edges[:-1] + bin_edges[1:])
