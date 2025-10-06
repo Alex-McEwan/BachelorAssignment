@@ -18,7 +18,7 @@ df = dos_df.merge(bandgap_df, on="material", how="inner")
 
 materials = df["material"].values
 energy_columns = [col for col in df.columns if col not in ["material", "bandgap"]]
-X_sparse = sparse.csr_matrix(df[energy_columns].values)
+X_sparse = sparse.csr_mat+   rix(df[energy_columns].values)
 
 N_NEIGHBORS = 15
 DISTANCE_METRIC = "cosine"
