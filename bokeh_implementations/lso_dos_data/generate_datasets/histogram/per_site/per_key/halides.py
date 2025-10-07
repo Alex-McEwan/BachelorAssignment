@@ -34,7 +34,7 @@ for spin in [1, -1]:
 
         total_hist = np.zeros(len(bin_centers))
 
-        for site_key in range(5, 11):
+        for site_key in range(5, 10):
             site_data = data["tdos_per_site"][str(site_key)]
             energies = np.array(site_data["energies"], dtype=float)
             dos = np.array(site_data["densities"][str(spin)], dtype=float)
