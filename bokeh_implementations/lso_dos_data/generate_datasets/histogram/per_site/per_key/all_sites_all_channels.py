@@ -53,3 +53,4 @@ for site_key in range(10):
         out_file = os.path.join(output_dir, f"site{site_key}_spin{spin}.csv")
         df.to_csv(out_file, index=False)
         print(f"Saved {out_file}")
+    
