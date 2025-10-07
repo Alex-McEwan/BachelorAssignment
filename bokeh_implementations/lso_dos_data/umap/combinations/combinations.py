@@ -10,6 +10,45 @@ import os
 import re
 
 base_dir = os.path.join("datasets", "output", "combinations")
+combo1 = [
+    os.path.join(base_dir, "BBAA", "site0_spin1.csv"),   # B1.up
+    os.path.join(base_dir, "BBAA", "site1_spin1.csv"),   # B2.up
+    os.path.join(base_dir, "BBAA", "site0_spin-1.csv"),  # B1.down
+    os.path.join(base_dir, "BBAA", "site1_spin-1.csv")   # B2.down
+]
+
+combo2 = [
+    os.path.join(base_dir, "tdos", "tdos_spin1.csv"),    # tdos.up
+    os.path.join(base_dir, "tdos", "tdos_spin-1.csv"),   # tdos.down
+    os.path.join(base_dir, "BBAA", "site0_spin1.csv"),   # B1.up
+    os.path.join(base_dir, "BBAA", "site1_spin1.csv"),   # B2.up
+    os.path.join(base_dir, "BBAA", "site0_spin-1.csv"),  # B1.down
+    os.path.join(base_dir, "BBAA", "site1_spin-1.csv")   # B2.down
+]
+
+combo3 = [
+    os.path.join(base_dir, "tdos", "tdos_spin1.csv"),    # tdos.up
+    os.path.join(base_dir, "tdos", "tdos_spin-1.csv"),   # tdos.down
+    os.path.join(base_dir, "BBAA", "site0_spin1.csv"),   # B1.up
+    os.path.join(base_dir, "BBAA", "site1_spin1.csv"),   # B2.up
+    os.path.join(base_dir, "BBAA", "site0_spin-1.csv"),  # B1.down
+    os.path.join(base_dir, "BBAA", "site1_spin-1.csv"),  # B2.down
+    os.path.join(base_dir, "halides", "spin1_sites5to10_summed.csv"),   # X.up
+    os.path.join(base_dir, "halides", "spin-1_sites5to10_summed.csv")   # X.down
+]
+
+combo4 = [
+    os.path.join(base_dir, "BBAA", "site0_spin1.csv"),   # B1.up
+    os.path.join(base_dir, "BBAA", "site1_spin1.csv"),   # B2.up
+    os.path.join(base_dir, "BBAA", "site0_spin-1.csv"),  # B1.down
+    os.path.join(base_dir, "BBAA", "site1_spin-1.csv"),  # B2.down
+    os.path.join(base_dir, "halides", "spin1_sites5to10_summed.csv"),   # X.up
+    os.path.join(base_dir, "halides", "spin-1_sites5to10_summed.csv")   # X.down
+]
+
+
+
+
 
 files_to_merge = [
     os.path.join(base_dir, "halides", "spin1_sites5to10_summed.csv"),
