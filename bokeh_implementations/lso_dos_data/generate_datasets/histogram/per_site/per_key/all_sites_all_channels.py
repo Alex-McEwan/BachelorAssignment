@@ -5,7 +5,7 @@ from pathlib import Path
 import os
 
 folder = os.path.join("datasets", "lsodos_persitejsons_250930")
-output_dir = os.path.join("datasets", "output", "per_site")
+output_dir = os.path.join("datasets", "output", "combinations", "BBAA")
 os.makedirs(output_dir, exist_ok=True)
 
 CONDUCTION_BAND_MINIMUM = 9.80837
@@ -21,7 +21,7 @@ bin_centers = 0.5 * (bin_edges[:-1] + bin_edges[1:])
 
 file_list = [f for f in os.listdir(folder) if f.endswith(".json")]
 
-for site_key in range(10):
+for site_key in range(5):
     for spin in [1, -1]:
         rows = []
         for fname in file_list:
@@ -53,4 +53,12 @@ for site_key in range(10):
         out_file = os.path.join(output_dir, f"site{site_key}_spin{spin}.csv")
         df.to_csv(out_file, index=False)
         print(f"Saved {out_file}")
+    
+
+
+
+
+
+
+
     
