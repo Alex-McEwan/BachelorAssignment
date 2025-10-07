@@ -2,44 +2,107 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MaxAbsScaler
 import umap
+from scipy import sparse
+from bokeh.plotting import figure, output_file, save
+from bokeh.models import ColumnDataSource, HoverTool, CategoricalColorMapper
+from bokeh.palettes import Category10
 import os
+import re
 
-# ==== 1. Choose the CSV files you want to combine ====
-# Give full paths or relative paths to your files:
+base_dir = os.path.join("datasets", "output", "combinations")
+
 files_to_merge = [
-    "combinations/BBAA/site0_spin-1.csv",
-    "combinations/halides/spin-1_sites5to10_summed.csv"
-    # Add more if you want
+    os.path.join(base_dir, "halides", "spin1_sites5to10_summed.csv"),
+    os.path.join(base_dir, "halides", "spin-1_sites5to10_summed.csv")
 ]
 
-# ==== 2. Load and merge ====
 dfs = []
 for f in files_to_merge:
     df = pd.read_csv(f)
     dfs.append(df)
 
-# Merge on 'material'
 merged = dfs[0]
 for df in dfs[1:]:
     merged = merged.merge(df, on="material", how="inner")
 
 materials = merged["material"].values
+feature_columns = [c for c in merged.columns if c != "material"]
+X_sparse = sparse.csr_matrix(merged[feature_columns].values)
 
-# Drop 'material' column to get features
-X = merged.drop(columns=["material"]).values
+N_NEIGHBORS = 15
+DISTANCE_METRIC = "cosine"
+DENSMAP = False
 
-# ==== 3. Scale and UMAP ====
 scaler = MaxAbsScaler()
-X_scaled = scaler.fit_transform(X)
+X_scaled = scaler.fit_transform(X_sparse)
 
-reducer = umap.UMAP(n_neighbors=15, metric="cosine", random_state=42, densmap=True)
+print("started UMAP")
+reducer = umap.UMAP(n_neighbors=N_NEIGHBORS, metric=DISTANCE_METRIC, random_state=42, densmap=DENSMAP)
 X_umap = reducer.fit_transform(X_scaled)
+print("finished UMAP")
 
-# ==== 4. Create dataframe with UMAP coordinates ====
-umap_df = pd.DataFrame({
-    "material": materials,
-    "x": X_umap[:, 0],
-    "y": X_umap[:, 1]
+HALIDES = ['Cl', 'Br', 'I', 'F', 'At', 'Ts']
+def extract_halide(name: str) -> str:
+    m = re.search(r'_(.*?)_lsodos$', name)
+    formula = m.group(1) if m else name
+    for h in HALIDES:
+        if formula.endswith(h):
+            return h
+    return "Unknown"
+
+halides = [extract_halide(m) for m in materials]
+
+DIRECTORY = "combined_sparse_umap_halide_coloring"
+SAVING_DIR = os.path.join("bokehfiles", DIRECTORY)
+os.makedirs(SAVING_DIR, exist_ok=True)
+
+FILE_NAME = f"combined_umap_halide_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
+
+MATERIAL_STRING = "material"
+X_AXIS_STRING = "x"
+Y_AXIS_STRING = "y"
+HALIDE_STRING = "halide"
+
+plot_df = pd.DataFrame({
+    MATERIAL_STRING: materials,
+    X_AXIS_STRING: X_umap[:, 0],
+    Y_AXIS_STRING: X_umap[:, 1],
+    HALIDE_STRING: halides
 })
 
-print(umap_df.head())
+source = ColumnDataSource(plot_df)
+
+unique_halides = sorted(set(halides))
+palette = Category10[max(3, min(len(unique_halides), 10))]
+color_mapping = CategoricalColorMapper(factors=unique_halides, palette=palette)
+
+plot = figure(
+    title=f"UMAP projection of combined dataset colored by halide ({N_NEIGHBORS} neighbors, {DISTANCE_METRIC} metric)",
+    width=800, height=800,
+    tools="pan,wheel_zoom,box_zoom,reset,hover,save",
+    active_scroll="wheel_zoom"
+)
+
+plot.scatter(X_AXIS_STRING, Y_AXIS_STRING, source=source, size=6, alpha=0.7,
+             color={"field": HALIDE_STRING, "transform": color_mapping},
+             legend_field=HALIDE_STRING)
+
+plot.select_one(HoverTool).tooltips = [
+    ("Material", f"@{MATERIAL_STRING}"),
+    ("Halide", f"@{HALIDE_STRING}"),
+    (X_AXIS_STRING, f"@{X_AXIS_STRING}{{0.00}}"),
+    (Y_AXIS_STRING, f"@{Y_AXIS_STRING}{{0.00}}"),
+]
+
+plot.xaxis.axis_label = X_AXIS_STRING
+plot.yaxis.axis_label = Y_AXIS_STRING
+plot.legend.title = "Halide"
+plot.legend.location = "top_left"
+
+output_file(os.path.join(SAVING_DIR, FILE_NAME))
+save(plot)
+
+print(f"Bokeh plot saved to {os.path.join(SAVING_DIR, FILE_NAME)}")
+
+
+
