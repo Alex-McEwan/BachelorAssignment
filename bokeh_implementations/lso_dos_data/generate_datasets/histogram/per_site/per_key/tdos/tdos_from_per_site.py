@@ -5,7 +5,7 @@ from pathlib import Path
 import os
 
 folder = os.path.join("datasets", "lsodos_persitejsons_250930")
-output_dir = os.path.join("datasets", "output", "tdos")
+output_dir = os.path.join("datasets", "output", "combinations_full_range", "tdos")
 os.makedirs(output_dir, exist_ok=True)
 
 CONDUCTION_BAND_MINIMUM = 9.80837
@@ -13,7 +13,7 @@ VALENCE_BAND_MAXIMUM = -0.00554
 LOWEST_AVG_ENERGY_SPACING = 0.00552
 
 dE = LOWEST_AVG_ENERGY_SPACING
-emin = VALENCE_BAND_MAXIMUM - 5.0
+emin = -77.579690
 emax = CONDUCTION_BAND_MINIMUM + 5.0
 
 bin_edges = np.arange(emin, emax + dE, dE)
