@@ -9,7 +9,7 @@ import os
 import re
 
 base_csv = os.path.join("datasets", "output", "dos_dataset_histogram_5_ev_cutoff_after_bandgap.csv")
-magmom_csv = os.path.join("datasets", "output", "material_magmom.csv")  # file with magmom_tot_lobster column
+magmom_csv = os.path.join("datasets", "output", "material_bandgap.csv")  # file with magmom_tot_lobster column
 
 dos_df = pd.read_csv(base_csv)
 magmom_df = pd.read_csv(magmom_csv)
