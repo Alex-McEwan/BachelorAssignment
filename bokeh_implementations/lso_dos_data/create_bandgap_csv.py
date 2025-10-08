@@ -4,7 +4,7 @@ import os
 path = os.path.join("datasets", "data_luc", "CombinedHDPinfo_lsodos.csv")
 df = pd.read_csv(path)
 
-subset = df[["comp", "bandgap", "CBM"]].copy()
+subset = df[["comp", "bandgap", "CBM", "magmom_tot_lobster"]].copy()
 
 subset = subset.rename(columns={"comp": "material"})
 
