@@ -6,11 +6,12 @@ from sklearn.preprocessing import MaxAbsScaler
 import umap
 
 class UMAPReducer:
-    def __init__(self, csv_files, n_neighbors=15, metric="cosine", densmap=True):
+    def __init__(self, csv_files, n_neighbors=15, metric="cosine", densmap=True, random_state=42):
         self.csv_files = csv_files if isinstance(csv_files, list) else [csv_files]
         self.n_neighbors = n_neighbors
         self.metric = metric
         self.densmap = densmap
+        self.random_state = random_state
 
     def load_and_merge(self) -> pd.DataFrame:
         merged = None
@@ -28,7 +29,7 @@ class UMAPReducer:
         reducer = umap.UMAP(
             n_neighbors=self.n_neighbors,
             metric=self.metric,
-            random_state=42,
+            random_state=self.random_state,
             densmap=self.densmap
         )
         return reducer.fit_transform(X_scaled)
