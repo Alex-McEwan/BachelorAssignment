@@ -5,12 +5,15 @@ from pathlib import Path
 import os
 
 folder = os.path.join("datasets", "lsodos_persitejsons_250930")
-output_dir = os.path.join("datasets", "output", "combinations_full_range", "BBAA")
+output_dir = os.path.join("datasets", "output", "combinations_full_range","spin_corrected", "BBAA")
 os.makedirs(output_dir, exist_ok=True)
 
 magmom_csv = os.path.join("datasets", "output", "material_bandgap.csv")
 magmom_df = pd.read_csv(magmom_csv)
 magmom_dict = dict(zip(magmom_df["material"], magmom_df["magmom_tot_lobster"]))
+
+
+
 
 CONDUCTION_BAND_MINIMUM = 9.80837
 VALENCE_BAND_MAXIMUM = -0.00554
@@ -25,7 +28,7 @@ bin_centers = 0.5 * (bin_edges[:-1] + bin_edges[1:])
 
 file_list = [f for f in os.listdir(folder) if f.endswith(".json")]
 
-for site_key in range(1):
+for site_key in range(2):
     for spin in [1, -1]:
         rows = []
         for fname in file_list:
@@ -48,7 +51,6 @@ for site_key in range(1):
             energies = np.array(site_data["energies"], dtype=float)
             dos = np.array(site_data["densities"][str(spin)], dtype=float)
 
-            # flip sign if magnetic moment is negative
             if magmom < 0:
                 dos = -dos
 
