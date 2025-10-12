@@ -9,7 +9,7 @@ from bokeh.palettes import Category10
 import os
 import re
 
-base_dir = os.path.join("datasets", "output", "combinations_full_range")
+base_dir = os.path.join("datasets", "output", "combinations_full_range", "spin_corrected")
 combo1 = [
     os.path.join(base_dir, "BBAA", "site0_spin1.csv"),   # B1.up
     os.path.join(base_dir, "BBAA", "site1_spin1.csv"),   # B2.up
@@ -62,7 +62,7 @@ import os
 import pandas as pd
 
 dfs = []
-for f in combo1:
+for f in halides_paths:
     df = pd.read_csv(f)
     prefix = os.path.splitext(os.path.basename(f))[0]
     df = df.rename(columns={c: f"{prefix}_{c}" for c in df.columns if c != "material"})
@@ -104,7 +104,7 @@ def extract_halide(name: str) -> str:
 
 halides = [extract_halide(m) for m in materials]
 
-DIRECTORY = "combined_sparse_umap_halide_coloring_fullrange"
+DIRECTORY = "spin_corrected_combined_sparse_umap_halide_coloring_fullrange"
 SAVING_DIR = os.path.join("bokehfiles", DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 

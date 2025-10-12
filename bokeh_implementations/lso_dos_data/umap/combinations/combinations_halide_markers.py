@@ -9,7 +9,7 @@ from bokeh.palettes import Viridis256
 import os
 import re
 
-base_dir = os.path.join("datasets", "output", "combinations_full_range")
+base_dir = os.path.join("datasets", "output", "combinations_full_range", "spin_corrected")
 combo1 = [
     os.path.join(base_dir, "BBAA", "site0_spin1.csv"),   # B1.up
     os.path.join(base_dir, "BBAA", "site1_spin1.csv"),   # B2.up
@@ -57,7 +57,7 @@ combo3_name = "tdosup_tdosdown_b1up_b1down_b2up_b2down_xup_xdown"
 combo4_name =  "b1up_b1down_b2up_b2down_xup_xdown"
 
 dfs = []
-for f in combo4:
+for f in halides_paths:
     df = pd.read_csv(f)
     prefix = os.path.splitext(os.path.basename(f))[0]
     df = df.rename(columns={c: f"{prefix}_{c}" for c in df.columns if c != "material"})
@@ -105,7 +105,7 @@ def extract_halide(name: str) -> str:
 halides = [extract_halide(m) for m in materials]
 unique_halides = sorted(set(halides))
 
-DIRECTORY = "combined_sparse_umap_bandgap_color_halide_marker_fullrange"
+DIRECTORY = "spin_corrected_combined_sparse_umap_bandgap_color_halide_marker_fullrange"
 SAVING_DIR = os.path.join("bokehfiles", DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
