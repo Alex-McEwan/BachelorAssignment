@@ -18,7 +18,7 @@ scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
 neighbours = 5
-min_dist = 0.1
+min_dist = 1
 metric = 'euclidean'
 random_state = 42
 
