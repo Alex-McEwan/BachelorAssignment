@@ -17,12 +17,18 @@ y = df["target"].to_numpy()
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
+neighbours = 5
+min_dist = 0.1
+metric = 'euclidean'
+random_state = 42
+
+
 print("started UMAP")
-reducer = umap.UMAP()
+reducer = umap.UMAP(n_neighbors=neighbours, min_dist=min_dist, metric=metric, random_state=random_state)
 X_umap = reducer.fit_transform(X_scaled)
 print("finished UMAP")
 
-saving_dir = "bokehfiles"
+saving_dir = os.path.join("bokehfiles", "digits_umap")
 os.makedirs(saving_dir, exist_ok=True)
 
 DIGIT_STRING = "digit"
@@ -61,6 +67,9 @@ plot.select_one(HoverTool).tooltips = [
 plot.legend.title = "Digit"
 plot.legend.location = "top_left"
 
-output_file(os.path.join(saving_dir, "digits_umap.html"))
+
+file_name = f"digits_umap_{neighbours}_neighbors_{min_dist}_min_dist_{metric}_metric.html"
+output_file(os.path.join(saving_dir, file_name))
+print("saving plot to directory:", saving_dir, "as", file_name)
 save(plot)
 

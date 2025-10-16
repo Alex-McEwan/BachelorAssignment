@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-material_name = "1131_CsTlAsCl_lsodos"
+material_name = "1040_CsNiBaCl_lsodos"
 csv_file = os.path.join("datasets", "output", "dos_dataset_histogram_5_ev_cutoff_after_bandgap.csv")
 
 df = pd.read_csv(csv_file)
