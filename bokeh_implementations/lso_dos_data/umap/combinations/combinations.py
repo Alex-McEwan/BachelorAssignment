@@ -48,6 +48,11 @@ combo4 = [
     os.path.join(base_dir, "halides", "spin-1_sites5to10_summed.csv")   # X.down
 ]
 
+tdos_combo = [
+    os.path.join(base_dir, "tdos", "tdos_spin1.csv"),    # tdos.up
+    os.path.join(base_dir, "tdos", "tdos_spin-1.csv"),   # tdos.down
+]
+
 halides_paths = [
     os.path.join(base_dir, "halides", "spin1_sites5to10_summed.csv"),
     os.path.join(base_dir, "halides", "spin-1_sites5to10_summed.csv")
@@ -58,13 +63,13 @@ combo2_name = "tdosup_tdosdown_b1up_b1down_b2up_b2down"
 combo3_name = "tdosup_tdosdown_b1up_b1down_b2up_b2down_xup_xdown"
 combo4_name =  "b1up_b1down_b2up_b2down_xup_xdown"
 halides_name = "Xup_Xdown"
-
+tdos_combo_name = "tdosup_tdosdown"
 
 import os
 import pandas as pd
 
 dfs = []
-for f in halides_paths:
+for f in tdos_combo:
     df = pd.read_csv(f)
     prefix = os.path.splitext(os.path.basename(f))[0]
     df = df.rename(columns={c: f"{prefix}_{c}" for c in df.columns if c != "material"})
@@ -74,7 +79,6 @@ merged = dfs[0]
 for df in dfs[1:]:
     merged = merged.merge(df, on="material", how="inner")
 
-print(f"Shape of first file ({halides_paths[0]}): {dfs[0].shape}")
 
 #print the ammount of rows
 print(f"Number of rows in merged dataset: {merged.shape[0]}")
@@ -113,7 +117,7 @@ DIRECTORY = "vacancy_ordered_combined_sparse_umap_halide_coloring_fullrange"
 SAVING_DIR = os.path.join("bokehfiles", DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
-FILE_NAME = f"combined_umap_halide_{halides_name}_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
+FILE_NAME = f"combined_umap_halide_{tdos_combo_name}_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
 
 MATERIAL_STRING = "material"
 X_AXIS_STRING = "x"
