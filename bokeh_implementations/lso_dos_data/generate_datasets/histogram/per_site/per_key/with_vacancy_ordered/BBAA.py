@@ -20,7 +20,7 @@ bin_centers = 0.5 * (bin_edges[:-1] + bin_edges[1:])
 
 file_list = [f for f in os.listdir(folder) if f.endswith(".json")]
 
-for site_key in range(5):
+for site_key in range(4):
     for spin in [1, -1]:
         rows = []
         for fname in file_list:
