@@ -9,7 +9,7 @@ from bokeh.palettes import Viridis256
 import os
 import re
 
-base_dir = os.path.join("datasets", "output", "combinations_full_range", "spin_corrected")
+base_dir = os.path.join("datasets", "output", "combinations_full_range", "vacancy_ordered")
 combo1 = [
     os.path.join(base_dir, "BBAA", "site0_spin1.csv"),   # B1.up
     os.path.join(base_dir, "BBAA", "site1_spin1.csv"),   # B2.up
@@ -49,6 +49,11 @@ combo4 = [
 halides_paths = [
     os.path.join(base_dir, "halides", "spin1_sites5to10_summed.csv"),
     os.path.join(base_dir, "halides", "spin-1_sites5to10_summed.csv")
+]
+
+tdos_combo = [
+    os.path.join(base_dir, "tdos", "tdos_spin1.csv"),    # tdos.up
+    os.path.join(base_dir, "tdos", "tdos_spin-1.csv"),   # tdos.down
 ]
 
 combo1_name = "b1up_b1down_b2up_b2down"
