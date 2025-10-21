@@ -13,8 +13,8 @@ for fname in files:
         with open(path) as f:
             data = json.load(f)
         tdos = data.get("tdos_per_site", {})
-        if "9" not in tdos:
-            missing_b2.append(fname)
+        if "9" not in tdos:\
+        print(f"File {fname} is missing key '9' in tdos_per_site.")
     except Exception as e:
         print(f"Error reading {path}: {e}")
 
