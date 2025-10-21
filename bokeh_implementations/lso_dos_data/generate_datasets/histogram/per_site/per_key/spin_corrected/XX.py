@@ -37,18 +37,19 @@ for spin in [1, -1]:
             continue
 
         material_name = Path(fname).stem[:-len("_persite")]
-        magmom = magmom_dict[material_name]  # will raise KeyError if not found
+        magmom = magmom_dict[material_name]
 
         total_hist = np.zeros(len(bin_centers))
 
         for site_key in range(5, 10):
             site_data = data["tdos_per_site"][str(site_key)]
             energies = np.array(site_data["energies"], dtype=float)
-            dos = np.array(site_data["densities"][str(spin)], dtype=float)
-
+            densities = site_data["densities"]
+            dos_up = np.array(densities["1"], dtype=float)
+            dos_dn = np.array(densities["-1"], dtype=float)
             if magmom < 0:
-                dos = -dos
-
+                dos_up, dos_dn = dos_dn, dos_up
+            dos = dos_up if spin == 1 else dos_dn
             hist, _ = np.histogram(energies, bins=bin_edges, weights=dos)
             total_hist += hist
 
