@@ -9,7 +9,7 @@ from bokeh.palettes import Category10
 import os
 import re
 
-base_dir = os.path.join("datasets", "output", "combinations_full_range", "spin_corrected")
+base_dir = os.path.join("datasets", "output", "combinations_full_range")
 combo1 = [
     os.path.join(base_dir, "BBAA", "site0_spin1.csv"),   # B1.up
     os.path.join(base_dir, "BBAA", "site1_spin1.csv"),   # B2.up
@@ -55,7 +55,7 @@ combo1_name = "b1up_b1down_b2up_b2down"
 combo2_name = "tdosup_tdosdown_b1up_b1down_b2up_b2down"
 combo3_name = "tdosup_tdosdown_b1up_b1down_b2up_b2down_xup_xdown"
 combo4_name =  "b1up_b1down_b2up_b2down_xup_xdown"
-
+halides_name = "Xup_Xdown"
 
 
 import os
@@ -104,11 +104,11 @@ def extract_halide(name: str) -> str:
 
 halides = [extract_halide(m) for m in materials]
 
-DIRECTORY = "spin_corrected_combined_sparse_umap_halide_coloring_fullrange"
+DIRECTORY = "combined_sparse_umap_halide_coloring_fullrange"
 SAVING_DIR = os.path.join("bokehfiles", DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
-FILE_NAME = f"combined_umap_halide_{combo1_name}_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
+FILE_NAME = f"combined_umap_halide_{halides_name}_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
 
 MATERIAL_STRING = "material"
 X_AXIS_STRING = "x"
