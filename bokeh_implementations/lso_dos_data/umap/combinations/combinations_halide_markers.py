@@ -60,9 +60,11 @@ combo1_name = "b1up_b1down_b2up_b2down"
 combo2_name = "tdosup_tdosdown_b1up_b1down_b2up_b2down"
 combo3_name = "tdosup_tdosdown_b1up_b1down_b2up_b2down_xup_xdown"
 combo4_name =  "b1up_b1down_b2up_b2down_xup_xdown"
+tdos_combo_name = "tdosup_tdosdown"
+halides_name = "Xup_Xdown"
 
 dfs = []
-for f in halides_paths:
+for f in tdos_combo:
     df = pd.read_csv(f)
     prefix = os.path.splitext(os.path.basename(f))[0]
     df = df.rename(columns={c: f"{prefix}_{c}" for c in df.columns if c != "material"})
@@ -72,7 +74,6 @@ merged = dfs[0]
 for df in dfs[1:]:
     merged = merged.merge(df, on="material", how="inner")
 
-print(f"Shape of first file ({halides_paths[0]}): {dfs[0].shape}")
 
 print(f"Merged dataset shape: {merged.shape}")
 print(merged.head())
@@ -110,11 +111,11 @@ def extract_halide(name: str) -> str:
 halides = [extract_halide(m) for m in materials]
 unique_halides = sorted(set(halides))
 
-DIRECTORY = "spin_corrected_combined_sparse_umap_bandgap_color_halide_marker_fullrange"
+DIRECTORY = "vacancy_ordered_combined_sparse_umap_bandgap_color_halide_marker_fullrange"
 SAVING_DIR = os.path.join("bokehfiles", DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
-FILE_NAME = f"combined_umap_halide_{combo4_name}_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
+FILE_NAME = f"combined_umap_halide_{tdos_combo_name}_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
 
 MATERIAL_STRING = "material"
 X_AXIS_STRING = "x"
