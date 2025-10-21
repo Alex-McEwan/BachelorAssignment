@@ -84,7 +84,10 @@ merged = merged.merge(bandgap_df, on="material", how="inner")
 
 materials = merged["material"].values
 bandgaps = merged["bandgap"].values
-feature_columns = [c for c in merged.columns if c not in ["material", "bandgap"]]
+# remove material and all bandgap-related columns
+bandgap_cols = list(bandgap_df.columns)
+feature_columns = [c for c in merged.columns if c not in bandgap_cols + ["material"]]
+conduction_types = merged["cond_type"].values
 X_sparse = sparse.csr_matrix(merged[feature_columns].values)
 
 N_NEIGHBORS = 15
