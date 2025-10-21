@@ -9,7 +9,9 @@ from bokeh.palettes import Category10
 import os
 import re
 
-base_dir = os.path.join("datasets", "output", "combinations_full_range")
+
+
+base_dir = os.path.join("datasets", "output", "combinations_full_range", "vacancy_ordered")
 combo1 = [
     os.path.join(base_dir, "BBAA", "site0_spin1.csv"),   # B1.up
     os.path.join(base_dir, "BBAA", "site1_spin1.csv"),   # B2.up
@@ -74,6 +76,9 @@ for df in dfs[1:]:
 
 print(f"Shape of first file ({halides_paths[0]}): {dfs[0].shape}")
 
+#print the ammount of rows
+print(f"Number of rows in merged dataset: {merged.shape[0]}")
+
 print(f"Merged dataset shape: {merged.shape}")
 print(merged.head())
 
@@ -104,7 +109,7 @@ def extract_halide(name: str) -> str:
 
 halides = [extract_halide(m) for m in materials]
 
-DIRECTORY = "combined_sparse_umap_halide_coloring_fullrange"
+DIRECTORY = "vacancy_ordered_combined_sparse_umap_halide_coloring_fullrange"
 SAVING_DIR = os.path.join("bokehfiles", DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
