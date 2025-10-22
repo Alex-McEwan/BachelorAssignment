@@ -17,9 +17,9 @@ y = df["target"].to_numpy()
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
-neighbours = 5
+neighbours = 25
 min_dist = 1
-metric = 'euclidean'
+metric = 'manhattan'
 random_state = 42
 
 
@@ -28,7 +28,7 @@ reducer = umap.UMAP(n_neighbors=neighbours, min_dist=min_dist, metric=metric, ra
 X_umap = reducer.fit_transform(X_scaled)
 print("finished UMAP")
 
-saving_dir = os.path.join("bokehfiles", "digits_umap")
+saving_dir = os.path.join("bokehfiles", "report","digits_umap", "different_metrics")
 os.makedirs(saving_dir, exist_ok=True)
 
 DIGIT_STRING = "digit"
