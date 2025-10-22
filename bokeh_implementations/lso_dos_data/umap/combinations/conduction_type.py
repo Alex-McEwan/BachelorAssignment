@@ -5,18 +5,16 @@ import umap
 from scipy import sparse
 from bokeh.plotting import figure, output_file, save
 from bokeh.models import ColumnDataSource, HoverTool, LinearColorMapper, ColorBar, BasicTicker
-from bokeh.palettes import Viridis256
+from bokeh.palettes import Inferno256, Viridis256, Cividis256
 import os
-import re
 
-# === Paths ===
 base_dir = os.path.join("datasets", "output", "combinations_full_range", "vacancy_ordered")
+
 tdos_combo = [
-    os.path.join(base_dir, "tdos", "tdos_spin1.csv"),    # tdos.up
-    os.path.join(base_dir, "tdos", "tdos_spin-1.csv"),   # tdos.down
+    os.path.join(base_dir, "tdos", "tdos_spin1.csv"),
+    os.path.join(base_dir, "tdos", "tdos_spin-1.csv"),
 ]
 
-# === Read and merge DOS data ===
 dfs = []
 for f in tdos_combo:
     df = pd.read_csv(f)
@@ -30,17 +28,16 @@ for df in dfs[1:]:
 
 print(f"Merged dataset shape: {merged.shape}")
 
-# === Add bandgap data ===
 bandgap_csv_file = os.path.join("datasets", "output", "material_bandgap.csv")
 bandgap_df = pd.read_csv(bandgap_csv_file)
 merged = merged.merge(bandgap_df, on="material", how="inner")
 
 materials = merged["material"].values
 bandgaps = merged["bandgap"].values
+conduction_types = merged["cond_type"].values
 
 bandgap_cols = list(bandgap_df.columns)
 feature_columns = [c for c in merged.columns if c not in bandgap_cols + ["material"]]
-
 X_sparse = sparse.csr_matrix(merged[feature_columns].values)
 
 N_NEIGHBORS = 15
@@ -60,53 +57,73 @@ reducer = umap.UMAP(
 X_umap = reducer.fit_transform(X_scaled)
 print("finished UMAP")
 
+MATERIAL_STRING = "material"
+X_AXIS_STRING = "x"
+Y_AXIS_STRING = "y"
+BANDGAP_STRING = "bandgap"
+COND_TYPE_STRING = "cond_type"
+
 plot_df = pd.DataFrame({
-    "material": materials,
-    "x": X_umap[:, 0],
-    "y": X_umap[:, 1],
-    "bandgap": bandgaps
+    MATERIAL_STRING: materials,
+    X_AXIS_STRING: X_umap[:, 0],
+    Y_AXIS_STRING: X_umap[:, 1],
+    BANDGAP_STRING: bandgaps,
+    COND_TYPE_STRING: conduction_types
 })
 
-report_base = "report" 
-DIRECTORY = "vacancy_ordered_umap_bandgap_color_fullrange"
+report_base = "report"
+DIRECTORY = "vacancy_ordered_umap_bandgap_color_condtype_marker_fullrange"
 SAVING_DIR = os.path.join("bokehfiles", report_base, DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
-FILE_NAME = f"umap_bandgap_color_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
+FILE_NAME = f"umap_bandgap_color_condtype_marker_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
 
 color_mapping = LinearColorMapper(
-    palette=Viridis256,
-    low=float(plot_df["bandgap"].min()),
-    high=float(plot_df["bandgap"].max())
+    palette=Cividis256,
+    low=float(plot_df[BANDGAP_STRING].quantile(0.01)),
+    high=float(plot_df[BANDGAP_STRING].quantile(0.99))
 )
+
+marker_map = {
+    "insulator": "square",
+    "semiconductor": "circle",
+    "half-metal": "triangle",
+    "metallic": "diamond"
+}
 
 TOOLS = "pan,wheel_zoom,box_zoom,reset,hover,save"
 plot = figure(
-    title=f"UMAP projection colored by bandgap ({N_NEIGHBORS} neighbors, {DISTANCE_METRIC} metric)",
+    title=f"UMAP projection colored by bandgap & marker by conduction type ({N_NEIGHBORS} neighbors, {DISTANCE_METRIC} metric)",
     width=900, height=900,
     tools=TOOLS,
     active_scroll="wheel_zoom"
 )
 
-source = ColumnDataSource(plot_df)
-plot.circle(
-    "x", "y",
-    source=source,
-    size=7, alpha=0.7,
-    color={"field": "bandgap", "transform": color_mapping}
-)
+unique_cond_types = sorted(set(conduction_types))
 
-# === Tooltip setup ===
+for ctype in unique_cond_types:
+    sub = plot_df[plot_df[COND_TYPE_STRING] == ctype]
+    source = ColumnDataSource(sub)
+    marker = marker_map.get(ctype.lower(), "circle")
+    getattr(plot, marker)(
+        X_AXIS_STRING, Y_AXIS_STRING,
+        source=source, size=7, alpha=0.7,
+        color={"field": BANDGAP_STRING, "transform": color_mapping},
+        legend_label=ctype
+    )
+
 plot.select_one(HoverTool).tooltips = [
-    ("Material", "@material"),
-    ("Bandgap", "@bandgap{0.00} eV"),
-    ("x", "@x{0.00}"),
-    ("y", "@y{0.00}")
+    ("Material", f"@{MATERIAL_STRING}"),
+    ("Conduction Type", f"@{COND_TYPE_STRING}"),
+    ("Bandgap", f"@{BANDGAP_STRING}{{0.00}} eV"),
+    (X_AXIS_STRING, f"@{X_AXIS_STRING}{{0.00}}"),
+    (Y_AXIS_STRING, f"@{Y_AXIS_STRING}{{0.00}}"),
 ]
 
-# === Axes and color bar ===
-plot.xaxis.axis_label = "x"
-plot.yaxis.axis_label = "y"
+plot.xaxis.axis_label = X_AXIS_STRING
+plot.yaxis.axis_label = Y_AXIS_STRING
+plot.legend.title = "Conduction Type"
+plot.legend.location = "top_left"
 
 color_bar = ColorBar(
     color_mapper=color_mapping,
