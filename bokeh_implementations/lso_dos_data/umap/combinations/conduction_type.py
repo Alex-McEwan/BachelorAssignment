@@ -4,8 +4,8 @@ from sklearn.preprocessing import MaxAbsScaler
 import umap
 from scipy import sparse
 from bokeh.plotting import figure, output_file, save
-from bokeh.models import ColumnDataSource, HoverTool, LinearColorMapper, ColorBar, BasicTicker
-from bokeh.palettes import Inferno256, Viridis256, Cividis256
+from bokeh.models import ColumnDataSource, HoverTool, CategoricalColorMapper, ColorBar, BasicTicker
+from bokeh.palettes import Category10
 import os
 
 base_dir = os.path.join("datasets", "output", "combinations_full_range", "vacancy_ordered")
@@ -72,45 +72,31 @@ plot_df = pd.DataFrame({
 })
 
 report_base = "report"
-DIRECTORY = "vacancy_ordered_umap_bandgap_color_condtype_marker_fullrange"
+DIRECTORY = "vacancy_ordered_umap_condtype_color_fullrange"
 SAVING_DIR = os.path.join("bokehfiles", report_base, DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
-FILE_NAME = f"umap_bandgap_color_condtype_marker_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
+FILE_NAME = f"umap_condtype_color_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
 
-color_mapping = LinearColorMapper(
-    palette=Cividis256,
-    low=float(plot_df[BANDGAP_STRING].quantile(0.01)),
-    high=float(plot_df[BANDGAP_STRING].quantile(0.99))
-)
-
-marker_map = {
-    "insulator": "square",
-    "semiconductor": "circle",
-    "half-metal": "triangle",
-    "metallic": "diamond"
-}
+unique_cond_types = sorted(set(conduction_types))
+palette = Category10[max(3, min(len(unique_cond_types), 10))]
+color_mapping = CategoricalColorMapper(factors=unique_cond_types, palette=palette)
 
 TOOLS = "pan,wheel_zoom,box_zoom,reset,hover,save"
 plot = figure(
-    title=f"UMAP projection colored by bandgap & marker by conduction type ({N_NEIGHBORS} neighbors, {DISTANCE_METRIC} metric)",
+    title=f"UMAP projection colored by conduction type ({N_NEIGHBORS} neighbors, {DISTANCE_METRIC} metric)",
     width=900, height=900,
     tools=TOOLS,
     active_scroll="wheel_zoom"
 )
 
-unique_cond_types = sorted(set(conduction_types))
-
-for ctype in unique_cond_types:
-    sub = plot_df[plot_df[COND_TYPE_STRING] == ctype]
-    source = ColumnDataSource(sub)
-    marker = marker_map.get(ctype.lower(), "circle")
-    getattr(plot, marker)(
-        X_AXIS_STRING, Y_AXIS_STRING,
-        source=source, size=7, alpha=0.7,
-        color={"field": BANDGAP_STRING, "transform": color_mapping},
-        legend_label=ctype
-    )
+source = ColumnDataSource(plot_df)
+plot.scatter(
+    X_AXIS_STRING, Y_AXIS_STRING,
+    source=source, size=7, alpha=0.7,
+    color={"field": COND_TYPE_STRING, "transform": color_mapping},
+    legend_field=COND_TYPE_STRING
+)
 
 plot.select_one(HoverTool).tooltips = [
     ("Material", f"@{MATERIAL_STRING}"),
@@ -124,15 +110,6 @@ plot.xaxis.axis_label = X_AXIS_STRING
 plot.yaxis.axis_label = Y_AXIS_STRING
 plot.legend.title = "Conduction Type"
 plot.legend.location = "top_left"
-
-color_bar = ColorBar(
-    color_mapper=color_mapping,
-    ticker=BasicTicker(),
-    label_standoff=8,
-    location=(0, 0),
-    title="Bandgap (eV)"
-)
-plot.add_layout(color_bar, "right")
 
 output_file(os.path.join(SAVING_DIR, FILE_NAME))
 save(plot)
