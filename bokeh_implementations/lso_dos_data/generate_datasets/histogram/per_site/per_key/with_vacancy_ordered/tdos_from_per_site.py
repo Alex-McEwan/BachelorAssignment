@@ -5,7 +5,7 @@ from pathlib import Path
 import os
 
 folder = os.path.join("datasets", "lsodos_persitejsons_250930")
-output_dir = os.path.join("datasets", "output", "combinations_full_range", "vacancy_ordered", "tdos")
+output_dir = os.path.join("datasets", "output", "combinations_full_range", "vacancy_ordered_5ev", "tdos")
 os.makedirs(output_dir, exist_ok=True)
 
 CONDUCTION_BAND_MINIMUM = 9.80837
