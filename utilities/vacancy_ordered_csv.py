@@ -9,6 +9,7 @@ records = []
 files = [f for f in os.listdir(base) if f.endswith(".json")]
 
 for fname in files:
+    print(f"Processing {fname}...", "percentage progress:", f"{(files.index(fname)+1)/len(files)*100:.2f}%")
     path = os.path.join(base, fname)
     material = os.path.splitext(fname)[0]
     if material.endswith("_persite"):
