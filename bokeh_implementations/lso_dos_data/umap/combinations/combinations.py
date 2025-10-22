@@ -112,9 +112,9 @@ def extract_halide(name: str) -> str:
     return "Unknown"
 
 halides = [extract_halide(m) for m in materials]
-
+report_base = "report"
 DIRECTORY = "vacancy_ordered_combined_sparse_umap_halide_coloring_fullrange"
-SAVING_DIR = os.path.join("bokehfiles", DIRECTORY)
+SAVING_DIR = os.path.join("bokehfiles", report_base, DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
 FILE_NAME = f"combined_umap_halide_{tdos_combo_name}_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
