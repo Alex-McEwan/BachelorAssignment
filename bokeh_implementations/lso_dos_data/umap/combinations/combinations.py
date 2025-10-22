@@ -69,7 +69,7 @@ import os
 import pandas as pd
 
 dfs = []
-for f in halides_paths:
+for f in tdos_combo:
     df = pd.read_csv(f)
     print(f"Number of columns in {f}: {df.shape[1]}")
     prefix = os.path.splitext(os.path.basename(f))[0]
@@ -92,7 +92,7 @@ feature_columns = [c for c in merged.columns if c != "material"]
 X_sparse = sparse.csr_matrix(merged[feature_columns].values)
 
 N_NEIGHBORS = 15
-DISTANCE_METRIC = "cosine"
+DISTANCE_METRIC = "chebyshev"
 DENSMAP = False
 
 scaler = MaxAbsScaler()
@@ -118,7 +118,7 @@ DIRECTORY = "vacancy_ordered_combined_sparse_umap_halide_coloring_fullrange"
 SAVING_DIR = os.path.join("bokehfiles", report_base, DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
-FILE_NAME = f"combined_umap_halide_{halides_name}_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
+FILE_NAME = f"combined_umap_halide_{tdos_combo_name}_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
 
 MATERIAL_STRING = "material"
 X_AXIS_STRING = "x"

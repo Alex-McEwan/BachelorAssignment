@@ -41,7 +41,7 @@ feature_columns = [c for c in merged.columns if c not in ["material", "vacancy_o
 X_sparse = sparse.csr_matrix(merged[feature_columns].values)
 
 N_NEIGHBORS = 15
-DISTANCE_METRIC = "euclidean"
+DISTANCE_METRIC = "mahalanobis"
 DENSMAP = False
 
 scaler = MaxAbsScaler()
