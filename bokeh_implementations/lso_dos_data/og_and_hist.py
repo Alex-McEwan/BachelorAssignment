@@ -41,18 +41,19 @@ for material_name in selected:
 
     fig, axes = plt.subplots(1, 2, figsize=(12, 4), sharey=True)
     axes[0].plot(energies_long, dos_long, label="TDOS", lw=1)
-    axes[0].set_title(f"Original DOS\n{material_name}")
     axes[0].set_xlabel("Energy (eV)")
     axes[0].set_ylabel("Total DOS (states/eV)")
+    axes[0].set_xlim(0, 6)
+    axes[0].set_ylim(0, 25)
+
 
     axes[1].bar(energies_hist, dos_hist, width=energies_hist[1]-energies_hist[0], align="center", alpha=0.7, edgecolor="blue")
-    axes[1].set_title("Histogram DOS")
     axes[1].set_xlabel("Energy (eV)")
-
-    fig.suptitle(material_name)
+    axes[1].set_xlim(0, 6)
+    axes[1].set_ylim(0, 25)
     fig.tight_layout(rect=[0,0,1,0.95])
 
-    out_file = os.path.join(output_dir, f"{material_name}_comparison.png")
+    out_file = os.path.join(output_dir, f"{material_name}_comparison_0_to_6_ev.png")
     plt.savefig(out_file, dpi=300, bbox_inches="tight")
     plt.close()
     print(f"Saved plot: {out_file}")

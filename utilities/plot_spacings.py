@@ -16,19 +16,9 @@ counts, bins, patches = plt.hist(df["avg_spacing"], bins=80, edgecolor="black")
 for i in range(len(counts)):
     if counts[i] > 0:
         label = f"{bins[i]:.4f}–{bins[i+1]:.4f}"
-        plt.text(
-            (bins[i] + bins[i+1]) / 2,
-            counts[i],
-            label,
-            ha="center",
-            va="bottom",
-            rotation=90,
-            fontsize=7
-        )
 
 plt.xlabel("Average ΔE (eV)")
 plt.ylabel("Count")
-plt.title("Distribution of average energy spacings across materials")
 plt.grid(True, alpha=0.3)
 plt.tight_layout()
 
