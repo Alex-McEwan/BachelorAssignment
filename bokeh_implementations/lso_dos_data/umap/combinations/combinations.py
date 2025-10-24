@@ -11,7 +11,7 @@ import re
 
 
 
-base_dir = os.path.join("datasets", "output", "combinations_full_range", "vacancy_ordered")
+base_dir = os.path.join("datasets", "output", "combinations_full_range", "vacancy_ordered_5ev")
 combo1 = [
     os.path.join(base_dir, "BBAA", "site0_spin1.csv"),   # B1.up
     os.path.join(base_dir, "BBAA", "site1_spin1.csv"),   # B2.up
@@ -119,7 +119,7 @@ DIRECTORY = "vacancy_ordered_combined_sparse_umap_halide_coloring_fullrange"
 SAVING_DIR = os.path.join("bokehfiles", report_base, tdos_base ,DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
-FILE_NAME = f"combined_umap_halide_{tdos_combo_name}_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
+FILE_NAME = f"5ev_combined_umap_halide_{tdos_combo_name}_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
 
 MATERIAL_STRING = "material"
 X_AXIS_STRING = "x"
