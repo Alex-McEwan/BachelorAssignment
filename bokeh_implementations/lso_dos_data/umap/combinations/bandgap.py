@@ -30,7 +30,6 @@ for df in dfs[1:]:
 
 print(f"Merged dataset shape: {merged.shape}")
 
-# === Add bandgap data ===
 bandgap_csv_file = os.path.join("datasets", "output", "material_bandgap.csv")
 bandgap_df = pd.read_csv(bandgap_csv_file)
 merged = merged.merge(bandgap_df, on="material", how="inner")
@@ -82,7 +81,6 @@ color_mapping = LinearColorMapper(
 
 TOOLS = "pan,wheel_zoom,box_zoom,reset,hover,save"
 plot = figure(
-    title=f"UMAP projection colored by bandgap ({N_NEIGHBORS} neighbors, {DISTANCE_METRIC} metric)",
     width=900, height=900,
     tools=TOOLS,
     active_scroll="wheel_zoom"
