@@ -92,7 +92,7 @@ feature_columns = [c for c in merged.columns if c != "material"]
 X_sparse = sparse.csr_matrix(merged[feature_columns].values)
 
 N_NEIGHBORS = 15
-DISTANCE_METRIC = "chebyshev"
+DISTANCE_METRIC = "manhattan"
 DENSMAP = False
 
 scaler = MaxAbsScaler()
@@ -114,8 +114,9 @@ def extract_halide(name: str) -> str:
 
 halides = [extract_halide(m) for m in materials]
 report_base = "report"
+tdos_base = "tdos"
 DIRECTORY = "vacancy_ordered_combined_sparse_umap_halide_coloring_fullrange"
-SAVING_DIR = os.path.join("bokehfiles", report_base, DIRECTORY)
+SAVING_DIR = os.path.join("bokehfiles", report_base, tdos_base ,DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
 FILE_NAME = f"combined_umap_halide_{tdos_combo_name}_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
@@ -139,7 +140,6 @@ palette = Category10[max(3, min(len(unique_halides), 10))]
 color_mapping = CategoricalColorMapper(factors=unique_halides, palette=palette)
 
 plot = figure(
-    title=f"UMAP projection of combined dataset colored by halide ({N_NEIGHBORS} neighbors, {DISTANCE_METRIC} metric)",
     width=800, height=800,
     tools="pan,wheel_zoom,box_zoom,reset,hover,save",
     active_scroll="wheel_zoom"

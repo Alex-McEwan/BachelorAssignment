@@ -42,7 +42,7 @@ feature_columns = [c for c in merged.columns if c not in bandgap_cols + ["materi
 X_sparse = sparse.csr_matrix(merged[feature_columns].values)
 
 N_NEIGHBORS = 15
-DISTANCE_METRIC = "euclidean"
+DISTANCE_METRIC = "manhattan"
 DENSMAP = False
 
 scaler = MaxAbsScaler()
@@ -73,8 +73,9 @@ plot_df = pd.DataFrame({
 })
 
 report_base = "report"
+tdos_base  = "tdos"
 DIRECTORY = "vacancy_ordered_umap_condtype_color_fullrange"
-SAVING_DIR = os.path.join("bokehfiles", report_base, DIRECTORY)
+SAVING_DIR = os.path.join("bokehfiles", report_base, tdos_base, DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
 FILE_NAME = f"umap_condtype_color_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"

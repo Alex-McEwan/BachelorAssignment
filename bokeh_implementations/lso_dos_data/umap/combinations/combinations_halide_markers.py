@@ -91,7 +91,7 @@ conduction_types = merged["cond_type"].values
 X_sparse = sparse.csr_matrix(merged[feature_columns].values)
 
 N_NEIGHBORS = 15
-DISTANCE_METRIC = "cosine"
+DISTANCE_METRIC = "manhattan"
 DENSMAP = False
 
 scaler = MaxAbsScaler()
@@ -114,8 +114,9 @@ def extract_halide(name: str) -> str:
 halides = [extract_halide(m) for m in materials]
 unique_halides = sorted(set(halides))
 report_base = "report"
+tdos_base = "tdos"
 DIRECTORY = "vacancy_ordered_combined_sparse_umap_bandgap_color_halide_marker_fullrange"
-SAVING_DIR = os.path.join("bokehfiles", report_base, DIRECTORY)
+SAVING_DIR = os.path.join("bokehfiles", report_base,tdos_base, DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
 FILE_NAME = f"combined_umap_halide_{tdos_combo_name}_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"

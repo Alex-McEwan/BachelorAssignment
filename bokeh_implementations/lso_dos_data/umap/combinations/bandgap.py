@@ -43,7 +43,7 @@ feature_columns = [c for c in merged.columns if c not in bandgap_cols + ["materi
 X_sparse = sparse.csr_matrix(merged[feature_columns].values)
 
 N_NEIGHBORS = 15
-DISTANCE_METRIC = "euclidean"
+DISTANCE_METRIC = "manhattan"
 DENSMAP = False
 
 scaler = MaxAbsScaler()
@@ -66,9 +66,10 @@ plot_df = pd.DataFrame({
     "bandgap": bandgaps
 })
 
-report_base = "report" 
+report_base = "report"
+tdos_base = "tdos"
 DIRECTORY = "vacancy_ordered_umap_bandgap_color_fullrange"
-SAVING_DIR = os.path.join("bokehfiles", report_base, DIRECTORY)
+SAVING_DIR = os.path.join("bokehfiles", report_base,tdos_base, DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
 FILE_NAME = f"umap_bandgap_color_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
@@ -111,7 +112,11 @@ color_bar = ColorBar(
     ticker=BasicTicker(),
     label_standoff=8,
     location=(0, 0),
-    title="Bandgap (eV)"
+    title="Bandgap (eV)",
+    major_label_text_font_size="16pt",
+    title_text_font_size="16pt"
+
+
 )
 plot.add_layout(color_bar, "right")
 

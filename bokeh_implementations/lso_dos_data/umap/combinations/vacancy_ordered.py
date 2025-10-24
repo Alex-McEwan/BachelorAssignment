@@ -10,13 +10,62 @@ import os
 
 base_dir = os.path.join("datasets", "output", "combinations_full_range", "vacancy_ordered")
 
+combo1 = [
+    os.path.join(base_dir, "BBAA", "site0_spin1.csv"),   # B1.up
+    os.path.join(base_dir, "BBAA", "site1_spin1.csv"),   # B2.up
+    os.path.join(base_dir, "BBAA", "site0_spin-1.csv"),  # B1.down
+    os.path.join(base_dir, "BBAA", "site1_spin-1.csv")   # B2.down
+]
+
+combo2 = [
+    os.path.join(base_dir, "tdos", "tdos_spin1.csv"),    # tdos.up
+    os.path.join(base_dir, "tdos", "tdos_spin-1.csv"),   # tdos.down
+    os.path.join(base_dir, "BBAA", "site0_spin1.csv"),   # B1.up
+    os.path.join(base_dir, "BBAA", "site1_spin1.csv"),   # B2.up
+    os.path.join(base_dir, "BBAA", "site0_spin-1.csv"),  # B1.down
+    os.path.join(base_dir, "BBAA", "site1_spin-1.csv")   # B2.down
+]
+
+combo3 = [
+    os.path.join(base_dir, "tdos", "tdos_spin1.csv"),    # tdos.up
+    os.path.join(base_dir, "tdos", "tdos_spin-1.csv"),   # tdos.down
+    os.path.join(base_dir, "BBAA", "site0_spin1.csv"),   # B1.up
+    os.path.join(base_dir, "BBAA", "site1_spin1.csv"),   # B2.up
+    os.path.join(base_dir, "BBAA", "site0_spin-1.csv"),  # B1.down
+    os.path.join(base_dir, "BBAA", "site1_spin-1.csv"),  # B2.down
+    os.path.join(base_dir, "halides", "spin1_sites5to10_summed.csv"),   # X.up
+    os.path.join(base_dir, "halides", "spin-1_sites5to10_summed.csv")   # X.down
+]
+
+combo4 = [
+    os.path.join(base_dir, "BBAA", "site0_spin1.csv"),   # B1.up
+    os.path.join(base_dir, "BBAA", "site1_spin1.csv"),   # B2.up
+    os.path.join(base_dir, "BBAA", "site0_spin-1.csv"),  # B1.down
+    os.path.join(base_dir, "BBAA", "site1_spin-1.csv"),  # B2.down
+    os.path.join(base_dir, "halides", "spin1_sites5to10_summed.csv"),   # X.up
+    os.path.join(base_dir, "halides", "spin-1_sites5to10_summed.csv")   # X.down
+]
+
+tdos_combo = [
+    os.path.join(base_dir, "tdos", "tdos_spin1.csv"),    # tdos.up
+    os.path.join(base_dir, "tdos", "tdos_spin-1.csv"),   # tdos.down
+]
+
 halides_paths = [
     os.path.join(base_dir, "halides", "spin1_sites5to10_summed.csv"),
     os.path.join(base_dir, "halides", "spin-1_sites5to10_summed.csv")
 ]
 
+
+combo1_name = "b1up_b1down_b2up_b2down"
+combo2_name = "tdosup_tdosdown_b1up_b1down_b2up_b2down"
+combo3_name = "tdosup_tdosdown_b1up_b1down_b2up_b2down_xup_xdown"
+combo4_name =  "b1up_b1down_b2up_b2down_xup_xdown"
+halides_name = "Xup_Xdown"
+tdos_combo_name = "tdosup_tdosdown"
+
 dfs = []
-for f in halides_paths:
+for f in tdos_combo:
     df = pd.read_csv(f)
     print(f"Number of columns in {f}: {df.shape[1]}")
     prefix = os.path.splitext(os.path.basename(f))[0]
@@ -41,7 +90,7 @@ feature_columns = [c for c in merged.columns if c not in ["material", "vacancy_o
 X_sparse = sparse.csr_matrix(merged[feature_columns].values)
 
 N_NEIGHBORS = 15
-DISTANCE_METRIC = "mahalanobis"
+DISTANCE_METRIC = "manhattan"
 DENSMAP = False
 
 scaler = MaxAbsScaler()
@@ -53,8 +102,9 @@ X_umap = reducer.fit_transform(X_scaled)
 print("finished UMAP")
 
 report_base = "report"
+tdos_base = "tdos"
 DIRECTORY = "vacancy_ordered_combined_sparse_umap_vacancy_coloring_fullrange"
-SAVING_DIR = os.path.join("bokehfiles", report_base, DIRECTORY)
+SAVING_DIR = os.path.join("bokehfiles", report_base,tdos_base, DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
 FILE_NAME = f"combined_umap_vacancycolor_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
@@ -80,7 +130,6 @@ palette = Category10[max(3, min(len(unique_states), 10))]
 color_mapping = CategoricalColorMapper(factors=unique_states, palette=palette)
 
 plot = figure(
-    title=f"UMAP projection of combined dataset colored by vacancy ordering ({N_NEIGHBORS} neighbors, {DISTANCE_METRIC} metric)",
     width=800, height=800,
     tools="pan,wheel_zoom,box_zoom,reset,hover,save",
     active_scroll="wheel_zoom"
