@@ -69,7 +69,7 @@ import os
 import pandas as pd
 
 dfs = []
-for f in combo1:
+for f in tdos_combo:
     df = pd.read_csv(f)
     print(f"Number of columns in {f}: {df.shape[1]}")
     prefix = os.path.splitext(os.path.basename(f))[0]
