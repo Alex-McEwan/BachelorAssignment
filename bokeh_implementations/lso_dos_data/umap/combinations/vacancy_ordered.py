@@ -65,7 +65,7 @@ halides_name = "Xup_Xdown"
 tdos_combo_name = "tdosup_tdosdown"
 
 dfs = []
-for f in tdos_combo:
+for f in combo1:
     df = pd.read_csv(f)
     print(f"Number of columns in {f}: {df.shape[1]}")
     prefix = os.path.splitext(os.path.basename(f))[0]
@@ -90,7 +90,7 @@ feature_columns = [c for c in merged.columns if c not in ["material", "vacancy_o
 X_sparse = sparse.csr_matrix(merged[feature_columns].values)
 
 N_NEIGHBORS = 15
-DISTANCE_METRIC = "manhattan"
+DISTANCE_METRIC = "cosine"
 DENSMAP = False
 
 scaler = MaxAbsScaler()
@@ -107,7 +107,7 @@ DIRECTORY = "vacancy_ordered_combined_sparse_umap_vacancy_coloring_fullrange"
 SAVING_DIR = os.path.join("bokehfiles", report_base,tdos_base, DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
-FILE_NAME = f"combined_umap_vacancycolor_{tdos_combo_name}_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
+FILE_NAME = f"combined_umap_vacancycolor_{combo1_name}_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
 
 MATERIAL_STRING = "material"
 X_AXIS_STRING = "x"
