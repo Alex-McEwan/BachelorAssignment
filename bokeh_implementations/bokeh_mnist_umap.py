@@ -17,9 +17,9 @@ y = df["target"].to_numpy()
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
-neighbours = 25
-min_dist = 1
-metric = 'manhattan'
+neighbours = 5
+min_dist = 1.0
+metric = 'euclidean'
 random_state = 42
 
 
@@ -48,7 +48,6 @@ source = ColumnDataSource(plot_df)
 color_mapping = CategoricalColorMapper(factors=list(digits_names), palette=Category10[len(digits_names)])
 
 plot = figure(
-    title="UMAP projection digits dataset",
     width=800, height=800,
     tools="pan,wheel_zoom,box_zoom,reset,hover,save",
     active_scroll="wheel_zoom"
@@ -66,7 +65,8 @@ plot.select_one(HoverTool).tooltips = [
 
 plot.legend.title = "Digit"
 plot.legend.location = "top_left"
-
+plot.legend.label_text_font_size = "22pt"
+plot.legend.title_text_font_size = "22pt"
 
 file_name = f"digits_umap_{neighbours}_neighbors_{min_dist}_min_dist_{metric}_metric.html"
 output_file(os.path.join(saving_dir, file_name))

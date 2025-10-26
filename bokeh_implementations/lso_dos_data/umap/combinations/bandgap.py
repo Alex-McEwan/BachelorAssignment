@@ -66,7 +66,7 @@ tdos_combo_name = "tdosup_tdosdown"
 
 # === Read and merge DOS data ===
 dfs = []
-for f in halides_paths:
+for f in tdos_combo:
     df = pd.read_csv(f)
     prefix = os.path.splitext(os.path.basename(f))[0]
     df = df.rename(columns={c: f"{prefix}_{c}" for c in df.columns if c != "material"})
@@ -120,7 +120,7 @@ DIRECTORY = "vacancy_ordered_umap_bandgap_color_fullrange"
 SAVING_DIR = os.path.join("bokehfiles", report_base,tdos_base, DIRECTORY)
 os.makedirs(SAVING_DIR, exist_ok=True)
 
-FILE_NAME = f"umap_bandgap_color_{halides_name}_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
+FILE_NAME = f"umap_bandgap_color_{tdos_combo_name}_{N_NEIGHBORS}_neighbors_{DISTANCE_METRIC}_densmap_{DENSMAP}.html"
 
 color_mapping = LinearColorMapper(
     palette=Viridis256,
@@ -161,8 +161,8 @@ color_bar = ColorBar(
     label_standoff=8,
     location=(0, 0),
     title="Bandgap (eV)",
-    major_label_text_font_size="16pt",
-    title_text_font_size="16pt"
+    major_label_text_font_size="22pt",
+    title_text_font_size="22pt"
 
 
 )

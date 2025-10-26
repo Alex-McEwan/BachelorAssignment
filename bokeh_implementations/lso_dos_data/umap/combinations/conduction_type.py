@@ -108,6 +108,8 @@ plot.select_one(HoverTool).tooltips = [
 
 plot.xaxis.axis_label = X_AXIS_STRING
 plot.yaxis.axis_label = Y_AXIS_STRING
+plot.legend.label_text_font_size = "22pt"
+plot.legend.title_text_font_size = "22pt"
 plot.legend.title = "Conduction Type"
 plot.legend.location = "top_left"
 

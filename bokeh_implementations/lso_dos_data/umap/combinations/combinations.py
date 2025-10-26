@@ -11,7 +11,7 @@ import re
 
 
 
-base_dir = os.path.join("datasets", "output", "combinations_full_range", "vacancy_ordered_5ev")
+base_dir = os.path.join("datasets", "output", "combinations_full_range", "vacancy_ordered")
 combo1 = [
     os.path.join(base_dir, "BBAA", "site0_spin1.csv"),   # B1.up
     os.path.join(base_dir, "BBAA", "site1_spin1.csv"),   # B2.up
@@ -158,6 +158,8 @@ plot.select_one(HoverTool).tooltips = [
 
 plot.xaxis.axis_label = X_AXIS_STRING
 plot.yaxis.axis_label = Y_AXIS_STRING
+plot.legend.label_text_font_size = "22pt"
+plot.legend.title_text_font_size = "22pt"
 plot.legend.title = "Halide"
 plot.legend.location = "top_left"
 
