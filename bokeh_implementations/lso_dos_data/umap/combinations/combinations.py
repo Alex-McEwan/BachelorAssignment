@@ -69,7 +69,7 @@ import os
 import pandas as pd
 
 dfs = []
-for f in tdos_combo:
+for f in combo1:
     df = pd.read_csv(f)
     print(f"Number of columns in {f}: {df.shape[1]}")
     prefix = os.path.splitext(os.path.basename(f))[0]
@@ -97,7 +97,7 @@ print(merged[feature_columns].head())
 X_sparse = sparse.csr_matrix(merged[feature_columns].values)
 
 N_NEIGHBORS = 15
-DISTANCE_METRIC = "manhattan"
+DISTANCE_METRIC = "correlation"
 DENSMAP = False
 
 scaler = MaxAbsScaler()
